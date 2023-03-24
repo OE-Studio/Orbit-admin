@@ -1,0 +1,11 @@
+.label::after {
+    content: 'Customer:' attr(data-domain);
+    position: absolute;
+    top: 14px;
+    left: 12px;
+    font-family: arial, helvetica, sans-serif;
+    font-size: 12px;
+    display: block;
+    color: #DA4040;
+    font-weight: bold;
+}

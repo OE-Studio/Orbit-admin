@@ -1,0 +1,94 @@
+import React, {MouseEventHandler, FunctionComponent} from "react";
+import { useRouter } from "next/router";
+import { CalendarOutline, SmartPhone, Envelope, BlackArrowRight } from "@/assets/icons";
+import Image from "next/image";
+import {RiAndroidLine, RiAppleLine} from 'react-icons/ri'
+import {TbDeviceLaptop} from 'react-icons/tb'
+
+
+interface tableProps{
+    action:MouseEventHandler
+}
+
+const arr = 'android,ios,web,web,ios,ios,android'.split(",")
+
+const TableCustomers:FunctionComponent<tableProps> = ({action}) =>{
+    let thClass = `px-6 py-4 text-left font-normal text-xs`
+    const router = useRouter()
+
+    const tableData=(n:string) =>{
+        const tdClass = `px-6 py-4`
+
+        let colors = n==='android' ? "bg-purple_5 text-purple_400" : n==="ios" ? "bg-teal_green_50 text-teal_green_500" : "bg-orange_50 text-orange_500"
+
+        const icons = n==='android' ? <RiAndroidLine/> : n==="ios" ? <RiAppleLine/> : <TbDeviceLaptop/>
+
+        const routeToCustomer = () =>{
+            router.push('/customers/id')
+        }
+
+        return (
+            <tr className="border border-collapse border-x-0" onClick={routeToCustomer}>
+                <td className={tdClass}>
+                    <div className="flex gap-3 items-center">
+                        <div className="inline-block">
+                            <Image src="/avatar.png" width={40} height={40} alt="avatar" className="block"/>
+                        </div>
+                        <div className="text-sm font-normal">
+                            <div className="text-[#101828]">Last-name First-name</div>
+                            <div className="text-[#475467]">@username</div>
+                        </div>
+                    </div>
+                </td>
+                <td className={tdClass}>
+                    <div className="flex items-center gap-3 text-gray_500">
+                        <Envelope/>
+                        youremail@gmail.com
+                    </div>
+                </td>
+                <td className={tdClass}>
+                    <div className="flex items-center gap-3 text-gray_500">
+                        <SmartPhone/>
+                        0000000000
+                    </div>
+                </td>
+                <td className={`${tdClass}`}>
+                &#8358; 50,000,000
+                </td>
+                <td className={tdClass}>
+                    <div className="flex items-center gap-3 text-gray_500">
+                        <CalendarOutline/>
+                        29/062023
+                    </div>
+                </td>
+                <td onClick={action} className={tdClass}>
+                    <BlackArrowRight/>
+                </td>
+            </tr>
+        )
+    }
+
+
+    return (
+        <table className="w-full">
+            <thead className="bg-gray_50 text-gray_600">
+                <tr>
+                    <th className={thClass}>Name</th>
+                    <th className={thClass}>Email</th>
+                    <th className={thClass}>Phone number</th>
+                    <th className={thClass}>Balance</th>
+                    <th className={thClass}>Date joined</th>
+                    <th className={thClass}></th>
+                </tr>
+            </thead>
+
+            <tbody className="w-full">
+                {arr.map(n=>{
+                    return tableData(n)
+                })}
+            </tbody>
+        </table>
+    )
+}
+
+export default TableCustomers
