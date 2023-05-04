@@ -13,17 +13,18 @@ import { Actions } from "./components/ACTIONS";
 import Drawer from "@/components/DRAWER";
 import { FlagUser } from "./components/DRAWER_FLAG_USER";
 import {SuspendUser} from './components/DRAWER_SUSPEND_USER'
-import { toggleFlagDrawer, toggleSuspendDrawer, toggleFlagHistoryDrawer, toggleSuspendHistoryDrawer } from "@/slices/CUSTOMER_SLICE/customerSlice";
+import { toggleFlagDrawer, toggleSuspendDrawer, toggleFlagHistoryDrawer, toggleSuspendHistoryDrawer } from "@/slices/CUSTOMER_SLICE";
 import {FlagHistory} from './components/DRAWER_FLAG_HISTORY'
 import { SuspendHistory } from "./components/DRAWER_SUSPEND_HISTORY";
+import { RootState } from "@/store";
 
 const CustomerContainer = () =>{
     const [currTab, setCurrTab] = useState(1)
-    const {showFlag, showSuspend, showFlagHistory, showSuspendHistory} = useSelector(state=>state.customer)
+    const {showFlag, showSuspend, showFlagHistory, showSuspendHistory} = useSelector((state:RootState)=>state.customer)
 
-    const handleTabChange = (newIndex:number) =>{
-        setCurrTab(newIndex)
-    }
+    // const handleTabChange = (newIndex:number) =>{
+    //     setCurrTab(newIndex)
+    // }
 
     const dispatch = useDispatch()
 
@@ -70,7 +71,7 @@ const CustomerContainer = () =>{
 
             <div className="mt-11">
                 <div>
-                    <Tab currentTab={currTab} onChange={handleTabChange}>
+                    <Tab currentTab={currTab}>
                         <div className="flex items-center justify-between">
                             <Tab.HeadsContainer>
                                 <Tab.Item label="Account" index={1}/>

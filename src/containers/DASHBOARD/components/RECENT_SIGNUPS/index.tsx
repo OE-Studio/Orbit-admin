@@ -1,5 +1,5 @@
 import React from "react";
-import CustomersTable from '../../../components/CUSTOMERSTABLE/index'
+import CustomersTable from './CUSTOMERSTABLE/index'
 import Drawer from "@/components/DRAWER";
 import VerificationDrawer from "@/components/USER_VERIFICATION/verification";
 import NewSignupDrawer from '@/components/USER_VERIFICATION/newSignup'
@@ -8,6 +8,7 @@ import { RiCloseLine } from "react-icons/ri";
 import Image from "next/image";
 import { useSelector, useDispatch } from "react-redux";
 import { toggleImageDetails } from "@/slices/CUSTOMERS_SLICE/index";
+import { RootState } from "@/store";
 
 const BothImages = ()=>{
     const dispatch = useDispatch()
@@ -27,7 +28,7 @@ const BothImages = ()=>{
                 </div>
             </div>
 
-            <div className="p-6 flex gap-6 h-72 relative bg-white rounded-b-[12px]">
+            <div className="p-6 flex gap-6 h-auto relative bg-white rounded-b-[12px]">
                 <div className="w-2/3 relative flex items-center">
                     <Image width={1000} height={500}  src="/NIN.png" className="block" alt="NIN"/>
                 </div>
@@ -45,7 +46,7 @@ const SingleImage = () =>{
         dispatch(toggleImageDetails(null))
     }
 
-    const {image} = useSelector(state=>state.customers)
+    const {image} = useSelector((state:RootState)=>state.customers)
 
     return (
         <div className="rounded-[12px] overflow-hidden w-[500px]">
@@ -61,14 +62,20 @@ const SingleImage = () =>{
             </div>
 
             <div className="p-6 h-auto relative bg-white rounded-b-[12px] w-full">
-                <Image width={500} height={500} src={image.source.img1} className="block" alt="NIN"/>
+                {image?.source?.img1 
+                ? <Image width={500} height={500} src={image.source?.img1} className="block" alt="NIN"/> 
+                : <div></div>}
             </div>
         </div>
     )
 }
 
 const DrawerImages = () =>{
-    const {image} = useSelector(state=>state.customers)
+    const {image} = useSelector((state:RootState)=>state.customers)
+
+    if(image.action === "") {
+        return <div></div>
+    }
 
     return (
         <>
@@ -78,7 +85,7 @@ const DrawerImages = () =>{
 }
 
 const RecentSignups = () =>{
-    const {showVerificationDetails, showImage} = useSelector(state=>state.customers)
+    const {showVerificationDetails, showImage} = useSelector((state:RootState)=>state.customers)
     return (
         <div>
             <div>Recent Signups</div>
@@ -89,7 +96,6 @@ const RecentSignups = () =>{
 
             <Drawer moreOption={<DrawerImages/>} visible={showVerificationDetails} showDetails={showImage}>
                 <VerificationDrawer/>
-                {/* <NewSignupDrawer/> */}
             </Drawer>
         </div>
     )

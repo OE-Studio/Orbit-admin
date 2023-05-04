@@ -9,7 +9,7 @@ const Navbar = () =>{
 
     
     return (
-        <div className="flex items-center w-full justify-between">
+        <nav className="flex items-center w-full justify-between pt-8">
             <div className="flex items-center gap-3">
                 <HomeOutline/>
                 <ArrowRight/>
@@ -35,7 +35,7 @@ const Navbar = () =>{
                     {/* </label> */}
                 </div>
             </div>
-        </div>
+        </nav>
     )
 }
 

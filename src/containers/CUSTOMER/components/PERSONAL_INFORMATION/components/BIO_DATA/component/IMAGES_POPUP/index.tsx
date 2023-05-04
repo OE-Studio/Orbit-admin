@@ -1,6 +1,6 @@
 import React from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { toggleImageDetails } from "@/slices/CUSTOMER_SLICE/customerSlice";
+import { toggleImageDetails } from "@/slices/CUSTOMER_SLICE";
 import Image from "next/image";
 import { RiCloseLine } from "react-icons/ri";
 import { Compare } from "@/assets/icons";

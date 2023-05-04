@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react";
 import { RiMore2Fill, RiLockLine, RiFlagLine, RiDeleteBin5Line } from "react-icons/ri";
-import { toggleFlagDrawer, toggleSuspendDrawer } from "@/slices/CUSTOMER_SLICE/customerSlice";
+import { toggleFlagDrawer, toggleSuspendDrawer } from "@/slices/CUSTOMER_SLICE";
 import {  useDispatch } from "react-redux";
 
 export const Actions = () =>{
@@ -17,8 +17,9 @@ export const Actions = () =>{
     useEffect(()=>{
         if(typeof window !== "undefined"){
             let options = document.querySelector('.actionoptions')
-            window.addEventListener('click', (e)=>{
-                if(!options?.contains(e.target)){
+            window.addEventListener('click', (e:MouseEvent)=>{
+                let target= e.target as HTMLElement
+                if(!options?.contains(target)){
                     setShowOptions(false)
                 }
             })

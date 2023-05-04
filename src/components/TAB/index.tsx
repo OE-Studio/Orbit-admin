@@ -1,24 +1,44 @@
-import React, {createContext, useContext} from "react";
+import React, {createContext, useContext, ReactNode, MouseEventHandler, useState} from "react";
 
-const TabContext = createContext(null)
+interface TabContextValue{
+    onChange(event: number): void,
+    currentTab:number
+}
 
-const Tab = ({currentTab, onChange, children}) =>{
+const TabContext = createContext<TabContextValue>(
+    {
+        onChange(){},
+        currentTab:1
+    }
+)
+
+interface Tab {
+    currentTab:number,
+    children:ReactNode
+}
+const Tab = (props:Tab) =>{
+    const [currentTab, setCurrentTab] = useState(1)
+
+    const onChange=(index:number) =>{
+        setCurrentTab(index)
+    }
+
     return (
         <div>
             <TabContext.Provider value={{onChange, currentTab}}>
-                {children}
+                {props.children}
             </TabContext.Provider>
         </div>
     )
 }
 
-Tab.HeadsContainer = ({children})=>{
+Tab.HeadsContainer = ({children}:{children:ReactNode})=>{
     return (
         <div className={`inline-flex gap-4 text-xs border-b border-neutral_200`}>{children}</div>
     )
 }
 
-Tab.Item=({label, index})=>{
+Tab.Item=({label, index}:{label:string, index:number})=>{
     const {currentTab, onChange} = useContext(TabContext)
 
     const handleChange = () =>{
@@ -34,7 +54,7 @@ Tab.Item=({label, index})=>{
     )
 }
 
-Tab.ContentContainer = ({children})=>{
+Tab.ContentContainer = ({children}:{children:ReactNode})=>{
     return (
         <div>
             {children}
@@ -42,10 +62,9 @@ Tab.ContentContainer = ({children})=>{
     )
 }
 
-Tab.ContentItem = ({index, children})=>{
+Tab.ContentItem = ({index, children}:{index:number, children:ReactNode})=>{
     const {currentTab} = useContext(TabContext)
     return index === currentTab ? <div>{children}</div> : null 
-    
 }
 
 export default Tab

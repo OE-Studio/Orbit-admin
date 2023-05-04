@@ -1,6 +1,7 @@
 import React from "react";
 import { CalendarOutline, GreenArrowUp } from "@/assets/icons";
 import Select from "@/components/SELECT";
+import {RiArrowUpLine} from 'react-icons/ri'
 
 const Stats = () =>{
     return (
@@ -10,7 +11,7 @@ const Stats = () =>{
                     <div className="inline-block">Stats</div>
 
                     <div className="inline-flex">
-                        <Select>
+                        <Select currentOption="" onChange={()=>{}}>
                             <Select.Container>
                                 <Select.Option label="Today" index={1}/>
                                 <Select.Option label="Last 30 days" index={2}/>
@@ -28,20 +29,74 @@ const Stats = () =>{
                 </div>
 
                 <div className="mt-3 divide-y divide-neutral_200">
-                    {[1,2,3,4,5,6].map(num=>{
-                        return (
-                            <div className="py-4">
-                                <div className="text-sm text-gray_400">Total Users</div>
-                                <div className="flex items-center justify-between mt-1">
-                                    <div className="font-clash-medium text-3xl">20000</div>
-                                    <div className="inline-flex items-center gap-1 text-sm">
-                                        <GreenArrowUp/>
-                                        3.4%
-                                    </div>
-                                </div>
+
+                    <div className="py-4">
+                        <div className="text-sm text-gray_400">Total Users</div>
+                        <div className="flex items-center justify-between mt-1">
+                            <div className="font-clash-medium text-3xl">{(5000).toLocaleString()}</div>
+                            <div className="inline-flex items-center gap-1 text-sm">
+                                <RiArrowUpLine/>
+                                3.4%
                             </div>
-                        )
-                    })}
+                        </div>
+                    </div>
+
+                    <div className="py-4">
+                        <div className="text-sm text-gray_400">Active Users</div>
+                        <div className="flex items-center justify-between mt-1">
+                            <div className="font-clash-medium text-3xl">
+                                {(5000).toLocaleString()}
+                            </div>
+                            <div className="inline-flex items-center gap-1 text-sm">
+                                <RiArrowUpLine/>
+                                3.4%
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="py-4">
+                        <div className="text-sm text-gray_400">New Users</div>
+                        <div className="flex items-center justify-between mt-1">
+                            <div className="font-clash-medium text-3xl">
+                                {(5000).toLocaleString()}
+                            </div>
+                            <div className="inline-flex items-center gap-1 text-sm">
+                                <RiArrowUpLine/>
+                                3.4%
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="py-4">
+                        <div className="text-sm text-gray_400">Percentage of Active Users</div>
+                        <div className="flex items-center justify-between mt-1">
+                            <div className="font-clash-medium text-3xl">
+                                +10%
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="py-4">
+                        <div className="text-sm text-gray_400">Total Funding</div>
+                        <div className="flex items-center justify-between mt-1">
+                            <div className="font-clash-medium text-3xl">{(5000).toLocaleString()}</div>
+                            <div className="inline-flex items-center gap-1 text-sm">
+                                <RiArrowUpLine/>
+                                3.4%
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="py-4">
+                        <div className="text-sm text-gray_400">Total Spending</div>
+                        <div className="flex items-center justify-between mt-1">
+                            <div className="font-clash-medium text-3xl">{(5000).toLocaleString()}</div>
+                            <div className="inline-flex items-center gap-1 text-sm">
+                                <RiArrowUpLine/>
+                                3.4%
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

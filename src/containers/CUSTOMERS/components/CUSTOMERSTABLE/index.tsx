@@ -1,9 +1,12 @@
 import React from 'react'
 import styles from './index.module.css'
-import {Arrow45} from '@/assets/icons'
 import TableCustomers from './components/TABLE/table'
 import {useDispatch} from 'react-redux'
 import {toggleVerificationDetails} from '@/slices/CUSTOMERS_SLICE/index'
+import {RiMore2Fill} from 'react-icons/ri'
+import {SwitchToggle} from '@/components/SWITCH'
+import {MoreOption} from './components/MORE_OPTION'
+
 
 const CustomersTable2 = () =>{
     const dispatch =  useDispatch()
@@ -18,7 +21,11 @@ const CustomersTable2 = () =>{
                         <div className="bg-gray_100 px-2 py-0.5 rounded-full text-[#344054] text-[10px]">200</div>
                     </div>
                     <div className="flex items-center px-3 py-2 gap-2">
-                        <div className="font-semibold text-[#667085]">Flagged</div>
+                        <div className="font-semibold text-[#667085]">Flagged account</div>
+                        <div className="bg-gray_100 px-2 py-0.5 rounded-full text-[#344054] text-[10px]">200</div>
+                    </div>
+                    <div className="flex items-center px-3 py-2 gap-2">
+                        <div className="font-semibold text-[#667085]">Suspended account</div>
                         <div className="bg-gray_100 px-2 py-0.5 rounded-full text-[#344054] text-[10px]">200</div>
                     </div>
                     <div className="flex items-center px-3 py-2 gap-2">
@@ -27,9 +34,14 @@ const CustomersTable2 = () =>{
                     </div>
                 </div>
 
-                <div className={`inline-flex float-right w-9 h-9 rounded-5px border border-neutral_200 items-center justify-center ${styles.blur2fade}`}>
-                    <Arrow45/>
-                </div>
+                {/* <div className={`inline-flex float-right w-9 h-9 rounded-5px border border-neutral_200 items-center justify-center relative ${styles.blur2fade}`}>
+                    <RiMore2Fill/>
+
+                    <div className="absolute top-10 right-0">
+                        <SwitchToggle/>
+                    </div>
+                </div> */}
+                <MoreOption/>
             </div>
 
             {/* table */}

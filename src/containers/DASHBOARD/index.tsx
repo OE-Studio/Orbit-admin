@@ -2,7 +2,7 @@ import React from "react";
 import Statistics1 from "./components/statistics1";
 import Stats from "./components/stats";
 import LineChart from "./components/chart";
-import RecentSignups from "./components/recentSignups";
+import RecentSignups from "./components/RECENT_SIGNUPS/index";
 
 const Dashboard = () =>{
     return (

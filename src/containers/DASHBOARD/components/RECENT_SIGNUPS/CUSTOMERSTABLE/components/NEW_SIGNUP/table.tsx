@@ -10,7 +10,7 @@ interface tableProps{
 
 const arr = 'android,ios,web,web,ios,ios,android'.split(",")
 
-const TableCustomers:FunctionComponent<tableProps> = ({action}) =>{
+const NewSignup:FunctionComponent<tableProps> = ({action}) =>{
     let thClass = `px-6 py-4 text-left font-normal text-xs`
 
     const tableData=(n:string) =>{
@@ -87,4 +87,4 @@ const TableCustomers:FunctionComponent<tableProps> = ({action}) =>{
     )
 }
 
-export default TableCustomers
+export default NewSignup

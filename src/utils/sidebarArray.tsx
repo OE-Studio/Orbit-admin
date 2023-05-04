@@ -2,9 +2,10 @@ import React, {ReactNode} from "react"
 
 import { HomeFilled, UsersFilled } from "@/assets/icons"
 
+import {RiHome6Fill, RiTeamFill, RiBankFill} from "react-icons/ri"
+
 interface sidebar {
     activeIcon:JSX.Element,
-    inActiveIcon:JSX.Element,
     text:string,
     url:string,
     count?:number
@@ -12,22 +13,19 @@ interface sidebar {
 
 export const sidebarArray:Array<sidebar> = [
     {
-        activeIcon:<HomeFilled/>,
-        inActiveIcon:<HomeFilled/>,
+        activeIcon:<RiHome6Fill/>,
         text:"Home",
         url:"/overview",
         count:400
     },
     {
-        activeIcon:<UsersFilled/>,
-        inActiveIcon:<HomeFilled/>,
+        activeIcon:<RiTeamFill/>,
         text:"Customers",
         url:"/customers"
     },
     {
-        activeIcon:<HomeFilled/>,
-        inActiveIcon:<HomeFilled/>,
-        text:"Customers",
-        url:"/dashboard"
+        activeIcon:<RiBankFill/>,
+        text:"Finance",
+        url:"/finance"
     }
 ]

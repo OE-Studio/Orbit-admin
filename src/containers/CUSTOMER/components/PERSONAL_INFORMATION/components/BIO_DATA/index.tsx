@@ -2,7 +2,7 @@ import React from "react";
 import Detail from "@/components/DETAIL";
 import { Compare } from "@/assets/icons";
 import Image from "next/image";
-import { toggleImageDetails } from "@/slices/CUSTOMER_SLICE/customerSlice";
+import { toggleImageDetails } from "@/slices/CUSTOMER_SLICE";
 import { useDispatch } from "react-redux";
 import { DrawerImages } from "./component/IMAGES_POPUP";
 import { useSelector } from "react-redux";

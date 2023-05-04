@@ -1,50 +1,16 @@
-import React, {useEffect, useState, ReactNode} from "react";
-import { Chart, registerables, ChartConfiguration  } from "chart.js";
+import React, {useEffect} from "react";
+import { Chart, registerables } from "chart.js";
 Chart.register(...registerables)
 import { BarChart, Camera } from "@/assets/icons";
-import html2canvas from 'html2canvas'
 
 let myChart:any = null
 const months = "Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec".split(',')
 
 
-const LineChart = () =>{
-    let [chartType, setChartType] = useState("bar")
-
-    const stackedChart = chartType === 'bar' ? true : false
-
-    const changeChart = ()=>{
-        if(chartType === "bar"){
-            setChartType('line')
-        }
-        else {
-            setChartType('bar')
-        }
-    }
-
-    const downloadImage = () =>{
-        // const screenshotTarget = document.body;
-        const screenshotTarget = document.querySelector('.chartCont') as HTMLElement
-
-        html2canvas(screenshotTarget)
-        .then(canvas => {
-            canvas.style.display = 'none'
-            document.body.appendChild(canvas)
-            return canvas
-        })
-        .then(canvas=>{
-            const image = canvas.toDataURL('image/png')
-            const a = document.createElement('a')
-            a.setAttribute('download', 'my-image.png')
-            a.setAttribute('href', image)
-            a.click()
-            canvas.remove()
-        })
-    }
+const FinanceLineChart = () =>{
     
     useEffect(()=>{
-        let canvas = document.querySelector('#lineChart') as HTMLCanvasElement;
-        let ctx = canvas.getContext('2d') as CanvasRenderingContext2D
+        let ctx = document.querySelector('#lineChartFinance').getContext('2d')
 
         const data={
             labels: [...months],
@@ -87,9 +53,8 @@ const LineChart = () =>{
                 },                    
             ],
         }
-
-        const config: ChartConfiguration = {
-            type:chartType === 'bar' ? 'bar' : 'line',
+        const config={
+            type:"line",
             data:data,
             options:{ 
                 maintainAspectRatio: false ,
@@ -103,14 +68,12 @@ const LineChart = () =>{
                             display:true,
                         },
                         display:false,
-                        stacked: stackedChart
                     },
                     x: {
                         beginAtZero: true,
                         grid: {
                             display: false,
                         },
-                        stacked: stackedChart
                     }
                 },
                 plugins:{
@@ -131,57 +94,19 @@ const LineChart = () =>{
 
         return ()=>{myChart.destroy()}
 
-    },[chartType])
+    },[])
     return (
         <div className="border border-neutral_200 mt-6 rounded-[12px]">
-            <div className="p-6 chartCont">
+            <div className="p-6">
                 <div className="flex gap-3 justify-start items-center text-gray_400">
                     <BarChart/> Activity overview for <span className="text-neutral_300">Last 7 days</span>
                 </div>
                 <div className="mt-6 h-72">
-                    <canvas id="lineChart"></canvas>
-                </div>
-            </div>
-
-            <div className="text-gray_400 bg-[#FBFDFE] py-4 rounded-b-[12px] px-6 flex justify-between">
-                <div className="flex gap-6 justify-start items-center">
-                    <div className="flex items-center justify-start gap-1 text-xs">
-                        <input type="checkbox"/>
-                        Total users
-                    </div>
-
-                    <div className="flex items-center justify-start gap-1 text-xs">
-                        <input type="checkbox"/>
-                        Active users
-                    </div>
-
-                    <div className="flex items-center justify-start gap-1 text-xs">
-                        <input type="checkbox"/>
-                        New users
-                    </div>
-
-                    <div className="flex items-center justify-start gap-1 text-xs">
-                        <input type="checkbox"/>
-                        Total funding
-                    </div>
-
-                    <div className="flex items-center justify-start gap-1 text-xs">
-                        <input type="checkbox"/>
-                        Total spending
-                    </div>
-                </div>
-
-                <div className="flex items-center gap-4">
-                    <div className="border border-neutral_200 rounded-5px flex items-center justify-center w-9 h-9" onClick={changeChart}>
-                        <BarChart/>
-                    </div>
-                    <div className="border border-neutral_200 rounded-5px flex items-center justify-center w-9 h-9" onClick={downloadImage}>
-                        <Camera/>
-                    </div>
+                    <canvas id="lineChartFinance"></canvas>
                 </div>
             </div>
         </div>
     )
 }
 
-export default LineChart
+export default FinanceLineChart

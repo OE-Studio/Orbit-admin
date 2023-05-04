@@ -6,7 +6,7 @@ import TransactionDrawer from "./components/TRANSACTION_DRAWER";
 import Drawer from "@/components/DRAWER";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { toggleTransactionDetails } from "@/slices/CUSTOMER_SLICE/customerSlice";
+import { toggleTransactionDetails } from "@/slices/CUSTOMER_SLICE";
 
 const Transactions = () =>{
     const {showTransaction} =  useSelector(state=>state.customer)

@@ -3,16 +3,18 @@ import { CalendarOutline, ArrowRight } from "@/assets/icons";
 
 const SelectContext = createContext({
     showOption:false,
-    value:""
+    value:"",
+    toggleOption(event:boolean){},
+    changeValue(event:string){}
 })
 
 interface childrenType {
     children:ReactNode,
     currentOption:string,
-    onChange:MouseEventHandler,
+    onChange:MouseEventHandler
 }
 
-const Select:FunctionComponent<childrenType> = ({children}) =>{
+const Select = (props: childrenType) =>{
     const [showOption, setShowOption] = useState(false)
     const [value, setValue] = useState("Today")
 
@@ -27,7 +29,7 @@ const Select:FunctionComponent<childrenType> = ({children}) =>{
     return (
         <div>
             <SelectContext.Provider value={{showOption, value, toggleOption, changeValue}}>
-                {children}
+                {props.children}
             </SelectContext.Provider>
         </div>
     )

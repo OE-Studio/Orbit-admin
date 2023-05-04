@@ -4,7 +4,7 @@ import {MdBolt} from 'react-icons/md'
 import {RiArrowRightSLine} from 'react-icons/ri'
 import { array } from "prop-types";
 import { useDispatch } from "react-redux";
-import { toggleTransactionDetails } from "@/slices/CUSTOMER_SLICE/customerSlice";
+import { toggleTransactionDetails } from "@/slices/CUSTOMER_SLICE";
 
 const transactionsArr = [
     {
