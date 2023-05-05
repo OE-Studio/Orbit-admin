@@ -3,9 +3,8 @@ import styles from './index.module.css'
 import TableCustomers from './components/TABLE/table'
 import {useDispatch} from 'react-redux'
 import {toggleVerificationDetails} from '@/slices/CUSTOMERS_SLICE/index'
-import {RiMore2Fill} from 'react-icons/ri'
-import {SwitchToggle} from '@/components/SWITCH'
 import {MoreOption} from './components/MORE_OPTION'
+import CustomersTab from '@/components/TAB_CUSTOMERS'
 
 
 const CustomersTable2 = () =>{
@@ -14,40 +13,39 @@ const CustomersTable2 = () =>{
 
     return (
         <div className="mt-11">
-            <div className="relative">
-                <div className="bg-[#F9FAFB] inline-flex p-1 text-xs">
-                    <div className={`flex items-center px-3 py-2 gap-2 bg-white rounded-[6px] ${styles.blur3}`}>
-                        <div className="font-semibold text-[#667085]">Customers</div>
-                        <div className="bg-gray_100 px-2 py-0.5 rounded-full text-[#344054] text-[10px]">200</div>
+            <CustomersTab currentTab={1}>
+                <div className="relative">
+                    <div className="bg-[#F9FAFB] inline-flex p-1 text-xs">
+                        <CustomersTab.HeadsContainer>
+                            <CustomersTab.Item label="Customers" number={200} index={1}/>
+                            <CustomersTab.Item label="Flagged account" number={200} index={2}/>
+                            <CustomersTab.Item label="Suspended account" number={200} index={3}/>
+                            <CustomersTab.Item label="Disabled account" number={200} index={4}/>
+                        </CustomersTab.HeadsContainer>
                     </div>
-                    <div className="flex items-center px-3 py-2 gap-2">
-                        <div className="font-semibold text-[#667085]">Flagged account</div>
-                        <div className="bg-gray_100 px-2 py-0.5 rounded-full text-[#344054] text-[10px]">200</div>
-                    </div>
-                    <div className="flex items-center px-3 py-2 gap-2">
-                        <div className="font-semibold text-[#667085]">Suspended account</div>
-                        <div className="bg-gray_100 px-2 py-0.5 rounded-full text-[#344054] text-[10px]">200</div>
-                    </div>
-                    <div className="flex items-center px-3 py-2 gap-2">
-                        <div className="font-semibold text-[#667085]">Disabled account</div>
-                        <div className="bg-gray_100 px-2 py-0.5 rounded-full text-[#344054] text-[10px]">200</div>
-                    </div>
+
+                    
+                    <MoreOption/>
                 </div>
 
-                {/* <div className={`inline-flex float-right w-9 h-9 rounded-5px border border-neutral_200 items-center justify-center relative ${styles.blur2fade}`}>
-                    <RiMore2Fill/>
-
-                    <div className="absolute top-10 right-0">
-                        <SwitchToggle/>
-                    </div>
-                </div> */}
-                <MoreOption/>
-            </div>
-
-            {/* table */}
-            <div className="mt-6 rounded-[12px] overflow-hidden border border-neutral_200 border-collapse border-b-0">
-                <TableCustomers action={()=>dispatch(toggleVerificationDetails())}/>
-            </div>
+                <div className="mt-6 rounded-[12px] overflow-hidden border border-neutral_200 border-collapse border-b-0">
+                    <CustomersTab.ContentContainer>
+                        <CustomersTab.ContentItem index={1}>
+                            <TableCustomers action={()=>dispatch(toggleVerificationDetails())}/>
+                        </CustomersTab.ContentItem>
+                        <CustomersTab.ContentItem index={2}>
+                            <TableCustomers action={()=>dispatch(toggleVerificationDetails())}/>
+                        </CustomersTab.ContentItem>
+                        <CustomersTab.ContentItem index={3}>
+                            <TableCustomers action={()=>dispatch(toggleVerificationDetails())}/>
+                        </CustomersTab.ContentItem>
+                        <CustomersTab.ContentItem index={4}>
+                            <TableCustomers action={()=>dispatch(toggleVerificationDetails())}/>
+                        </CustomersTab.ContentItem>
+                    </CustomersTab.ContentContainer>
+                    
+                </div>
+            </CustomersTab>
         </div>
     )
 }
