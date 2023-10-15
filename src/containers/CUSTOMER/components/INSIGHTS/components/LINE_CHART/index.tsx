@@ -11,7 +11,7 @@ const InsightLineChart = () =>{
     
     useEffect(()=>{
         const mycanvas = document.querySelector('#lineChartInsight') as HTMLCanvasElement
-        const ctx = mycanvas.getContext('2d')
+        const ctx = mycanvas.getContext('2d') as CanvasRenderingContext2D
 
         const data={
             labels: [...months],
