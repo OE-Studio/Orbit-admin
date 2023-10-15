@@ -17,9 +17,9 @@ const CustomersTable = () =>{
                 <div className="relative">
                     <div className="bg-[#F9FAFB] inline-flex p-1 text-xs">
                         <CustomersTab.HeadsContainer>
-                            <CustomersTab.Item label="New Signup" number={200} index={1}/>
-                            <CustomersTab.Item label="Awaiting Verification" number={200} index={2}/>
-                            <CustomersTab.Item label="Newly verified" number={200} index={3}/>
+                            {/* <CustomersTab.Item label="New Signup" number={200} index={1}/> */}
+                            <CustomersTab.Item label="Awaiting Verification" number={200} index={1}/>
+                            {/* <CustomersTab.Item label="Newly verified" number={200} index={3}/> */}
                         </CustomersTab.HeadsContainer>
                     </div>
 
@@ -30,17 +30,17 @@ const CustomersTable = () =>{
 
                 <div className="mt-6 rounded-[12px] overflow-hidden border border-neutral_200 border-collapse border-b-0">
                     <CustomersTab.ContentContainer>
-                        <CustomersTab.ContentItem index={1}>
+                        {/* <CustomersTab.ContentItem index={1}>
                             <NewSignup action={()=>dispatch(toggleVerificationDetails(null))}/> 
-                        </CustomersTab.ContentItem>
+                        </CustomersTab.ContentItem> */}
 
-                        <CustomersTab.ContentItem index={2}>
+                        <CustomersTab.ContentItem index={1}>
                             <AwaitVerification action={(n)=>dispatch(toggleVerificationDetails(n))}/>  
                         </CustomersTab.ContentItem>
 
-                        <CustomersTab.ContentItem index={3}>
+                        {/* <CustomersTab.ContentItem index={3}>
                             <NewlyVerified action={()=>dispatch(toggleVerificationDetails(null))}/>  
-                        </CustomersTab.ContentItem>
+                        </CustomersTab.ContentItem> */}
                     </CustomersTab.ContentContainer>
                 </div>
             </CustomersTab>

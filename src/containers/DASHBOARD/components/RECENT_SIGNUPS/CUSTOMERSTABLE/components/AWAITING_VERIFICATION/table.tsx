@@ -4,6 +4,7 @@ import Image from "next/image";
 import {RiAndroidLine, RiAppleLine} from 'react-icons/ri'
 import {TbDeviceLaptop} from 'react-icons/tb'
 import { useGetRequestsQuery } from "@/slices/VERIFICATON/verificationApiSlice";
+import { Loader } from "@/assets/icons";
 
 interface tableProps{
     action:MouseEventHandler
@@ -26,7 +27,6 @@ const AwaitVerification:FunctionComponent<tableProps> = ({action}:any) =>{
     const {data:requests, isLoading, isError, error} = useGetRequestsQuery({ count: 5 },
         { refetchOnMountOrArgChange: true })
 
-    console.log(requests)
 
     let thClass = `px-6 py-4 text-left font-normal text-xs`
 
@@ -83,7 +83,9 @@ const AwaitVerification:FunctionComponent<tableProps> = ({action}:any) =>{
     }
 
     if(isLoading){
-        return <p>Loading</p>
+        return <div className="flex items-center justify-center">
+            <Loader/>
+        </div>
     }
 
     return (
@@ -100,9 +102,12 @@ const AwaitVerification:FunctionComponent<tableProps> = ({action}:any) =>{
             </thead>
 
             <tbody className="w-full">
-                {requests?.allKYC.map((n:user)=>{
-                    return tableData(n)
-                })}
+                {/* {requests.allKYC && requests.allKYC.length > 0 ? } */}
+                {requests.length === 0 
+                    ? <div>No KYC request</div> 
+                    : requests.map((n:user)=>{
+                        return tableData(n)
+                    })}
             </tbody>
         </table>
     )
