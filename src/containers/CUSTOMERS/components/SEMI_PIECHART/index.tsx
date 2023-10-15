@@ -1,11 +1,12 @@
 import React, {useEffect} from "react";
 import Chart from 'chart.js/auto';
 
-let myChart = null
+let myChart:any = null
 
 const SemiPieChart = () =>{
     useEffect(()=>{
-        let ctx = document.querySelector('#pieChart').getContext('2d')
+        let canvas = document.querySelector('#pieChart') as HTMLCanvasElement
+        let ctx = canvas.getContext('2d')
 
         const data={
             labels: ["verified", "unverified"],
@@ -45,6 +46,7 @@ const SemiPieChart = () =>{
         
 
         if(myChart!==null) myChart.destroy()
+            // @ts-ignore
             myChart = new Chart(ctx, config)
 
             return ()=>{myChart.destroy()}
