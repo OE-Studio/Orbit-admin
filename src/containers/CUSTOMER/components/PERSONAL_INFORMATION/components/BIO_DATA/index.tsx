@@ -7,11 +7,12 @@ import { useDispatch } from "react-redux";
 import { DrawerImages } from "./component/IMAGES_POPUP";
 import { useSelector } from "react-redux";
 import {Popup} from '@/components/POPUP/index'
+import { RootState } from "@/store";
 
 const BioData = () =>{
     const dispatch = useDispatch()
 
-    const {showImage} = useSelector(state=>state.customer)
+    const {showImage} = useSelector((state:RootState)=>state.customer)
 
     const toggleImagesHandler = () =>{
         dispatch(toggleImageDetails({
