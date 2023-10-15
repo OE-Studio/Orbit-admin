@@ -1,11 +1,12 @@
 import React, {useEffect} from "react";
 import Chart from 'chart.js/auto';
 
-let myChart = null
+let myChart:any = null
 
 const TransactionsPieChart = () =>{
     useEffect(()=>{
-        let ctx = document.querySelector('#pieChartTransactions').getContext('2d')
+        let myCanvas = document.querySelector('#pieChartTransactions') as HTMLCanvasElement
+        let ctx = myCanvas.getContext('2d') as CanvasRenderingContext2D
 
         const data={
             labels: ["verified", "unverified"],
@@ -45,7 +46,10 @@ const TransactionsPieChart = () =>{
 
         if(myChart!==null) myChart.destroy()
 
-        myChart = new Chart(ctx, config)
+        if(ctx){
+            // @ts-ignore
+            myChart = new Chart(ctx, config)
+        }
 
         return ()=>{myChart.destroy()}
         // eslint-disable-next-line
