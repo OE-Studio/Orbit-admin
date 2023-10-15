@@ -16,6 +16,12 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         const [showPassword, setShowPassword] = useState(false)
         const [focused, setFocused] = useState(false)
 
+        const checkValue=(e:any)=>{
+            if(!e.target.value){
+                setFocused(false)
+            }
+        }
+
         useEffect(()=>{
             if (type === "password" && showPassword){
                 setInputType("text")
@@ -23,15 +29,14 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             else if(type === "password" && !showPassword) {
                 setInputType("password")
             }
+
+            if(inputRef?.current?.value){
+                setFocused(true)
+            }
+            
         }, [type, showPassword])
 
         useImperativeHandle(ref, ()=> inputRef.current!)
-
-        const checkValue=(e:any)=>{
-            if(!e.target.value){
-                setFocused(false)
-            }
-        }
 
 
         return (
@@ -41,7 +46,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
                         type={inputType} 
                         name={name}
                         placeholder=" "
-                        className={`h-11 pb-1 block w-full px-2 bg-transparent appearance-none focus:outline-none focus:ring-0 text-gray_500 `}
+                        className={`h-11 pb-1 block w-full px-2 bg-transparent appearance-none focus:outline-none focus:ring-0 text-gray_500`}
                         ref={inputRef}
                         onFocus={()=>setFocused(true)}
                         onBlur={checkValue}
