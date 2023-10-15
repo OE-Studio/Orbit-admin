@@ -5,6 +5,7 @@ import Image from "next/image";
 import { RiCloseLine } from "react-icons/ri";
 import { Compare } from "@/assets/icons";
 import { Contact } from "@/assets/icons";
+import { RootState } from "@/store";
 
 const BothImages = ()=>{
     const dispatch = useDispatch()
@@ -42,7 +43,7 @@ const SingleImage = () =>{
         dispatch(toggleImageDetails(null))
     }
 
-    const {image} = useSelector(state=>state.customer)
+    const {image} = useSelector((state:RootState)=>state.customer)
 
     return (
         <div className="rounded-[12px] overflow-hidden w-[500px]">
@@ -65,7 +66,7 @@ const SingleImage = () =>{
 }
 
 export const DrawerImages = () =>{
-    const {image} = useSelector(state=>state.customer)
+    const {image} = useSelector((state:RootState)=>state.customer)
 
     return (
         <>

@@ -7,9 +7,10 @@ import Drawer from "@/components/DRAWER";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { toggleTransactionDetails } from "@/slices/CUSTOMER_SLICE";
+import { RootState } from "@/store";
 
 const Transactions = () =>{
-    const {showTransaction} =  useSelector(state=>state.customer)
+    const {showTransaction} =  useSelector((state:RootState)=>state.customer)
     const dispatch = useDispatch()
     return (
         <div className="grid grid-cols-11 gap-12">
@@ -22,7 +23,7 @@ const Transactions = () =>{
                 <TransactionsChart/>
             </div>
 
-            <Drawer visible={showTransaction}>
+            <Drawer closeHandler={()=>dispatch(toggleTransactionDetails(null))} visible={showTransaction}>
                 <TransactionDrawer closeDrawer={()=>dispatch(toggleTransactionDetails(null))}/>
             </Drawer>
         </div>
