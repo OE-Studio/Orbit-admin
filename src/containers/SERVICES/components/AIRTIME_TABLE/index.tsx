@@ -9,7 +9,7 @@ interface airtime {
 }
 
 const AirtimeTable = () =>{
-    const tdClass = `px-6 py-4`
+    const tdClass = `px-6 py-2`
     let thClass = `px-6 py-4 text-left font-normal text-xs`
 
     const {data:allAirtimes, isLoading} = useGetAirtimeQuery(null)
@@ -22,8 +22,9 @@ const AirtimeTable = () =>{
                 {/* <button>Add new Products</button> */}
             </div>
 
+            <div className="border rounded-lg">
             <table className="w-full">
-                <thead>
+                <thead className="bg-gray_50 text-gray_600 rounded-t-lg">
                     <tr>
                         <th className={thClass}>Name</th>
                         <th className={thClass}>Provider</th>
@@ -35,15 +36,15 @@ const AirtimeTable = () =>{
                 <tbody>
                     {allAirtimes?.map((airtime:airtime)=>{
                         return (
-                            <tr key={airtime.name}>
+                            <tr  className="border-t border-collapse border-x-0" key={airtime.name}>
                                 <td className={tdClass}>
                                     <div className="flex gap-3 items-center">
                                         <div className="w-10 h-10 rounded flex items-center justify-center border">
                                             <BagIcon/>
                                         </div>
                                         <div>
-                                            <p>{airtime.name}</p>
-                                            <p>{airtime.description}</p>
+                                            <p className="text-sm font-medium">{airtime.name}</p>
+                                            <p className="text-sm">{airtime.description}</p>
                                         </div>
                                     </div>
                                 </td>
@@ -51,7 +52,10 @@ const AirtimeTable = () =>{
                                     <div>{airtime.provider_name}</div>
                                 </td>
                                 <td className={tdClass}>
-                                    <div>{airtime.status}</div>
+                                    <div className={`inline-flex items-center px-2 py-1 rounded-full gap-1.5 capitalize text-xs font-medium ${airtime.status === 'active' ? 'bg-green_50' : 'bg-orange_50'}`}>
+                                        <div className={`w-1.5 h-1.5 rounded-full ${airtime.status === 'active' ? 'bg-[#027A48]' : 'bg-[#B93815]'}`}></div>
+                                        <div className={airtime.status === 'active' ? 'text-[#027A48]' : 'text-[#B93815]'}>{airtime.status}</div>
+                                    </div>
                                 </td>
                                 <td className={tdClass}>
                                     <div>T1-500</div>
@@ -62,25 +66,9 @@ const AirtimeTable = () =>{
                             </tr>
                         )
                     })}
-                    {/* <tr>
-                        <td className={tdClass}>
-                            <div>{airtime.name}</div>
-                        </td>
-                        <td className={tdClass}>
-                            <div>{airtime.provider_name}</div>
-                        </td>
-                        <td className={tdClass}>
-                            <div>{airtime.status}</div>
-                        </td>
-                        <td className={tdClass}>
-                            <div>T1-500</div>
-                        </td>
-                        <td className={tdClass}>
-                            <div>Pen</div>
-                        </td>
-                    </tr> */}
                 </tbody>
             </table>
+            </div>
         </div>
     )
 }
