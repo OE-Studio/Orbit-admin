@@ -75,7 +75,7 @@ const IconComponent = ({type, customerName}:{type:string, customerName?:string})
 
 const TableData = (data:{type:string, recipient?:string})=>{
     const dispatch = useDispatch()
-    const toggleDetails = () =>dispatch(toggleTransactionDetails())
+    const toggleDetails = () =>dispatch(toggleTransactionDetails(null))
     return (
         <tr onClick={toggleDetails} className="w-full border border-collapse border-neutral_200 border-x-0">
             <td className="py-4">
