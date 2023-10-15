@@ -11,7 +11,17 @@ interface initialStateTypes {
             img2:""
         }
     },
-    loadingApprove:boolean
+    loadingApprove:boolean,
+    currCustomer:{
+        firstName:string,
+        lastName:string,
+        utilityDoc:string,
+        selfieId:string,
+        userId:string,
+        username:string,
+        email:string,
+        nin:string
+    }
 }
 
 const initialState:initialStateTypes = {
@@ -25,15 +35,27 @@ const initialState:initialStateTypes = {
             img2:""
         }
     },
-    loadingApprove:false
+    loadingApprove:false,
+    currCustomer:{
+        firstName:"",
+        lastName:"",
+        utilityDoc:"",
+        selfieId:"",
+        userId:"",
+        username:"",
+        email:"",
+        nin:""
+    }
 }
 
 const Customers = createSlice({
     name:"customers",
     initialState,
     reducers:{
-        toggleVerificationDetails:(state)=>{
+        toggleVerificationDetails:(state, {payload})=>{
             state.showVerificationDetails = !state.showVerificationDetails
+
+            state.currCustomer = payload && Object.keys(payload).length > 0 ? payload : {}
         },
         toggleImageDetails:(state, {payload})=>{  
             if(payload === null || payload === undefined) {

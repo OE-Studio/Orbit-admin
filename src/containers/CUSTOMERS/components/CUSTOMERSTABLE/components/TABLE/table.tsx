@@ -4,6 +4,7 @@ import { CalendarOutline, SmartPhone, Envelope, BlackArrowRight } from "@/assets
 import Image from "next/image";
 import {RiAndroidLine, RiAppleLine} from 'react-icons/ri'
 import {TbDeviceLaptop} from 'react-icons/tb'
+import { useAllCustomersQuery } from "@/slices/CUSTOMERS_SLICE/customersApiSlice";
 
 
 interface tableProps{
@@ -13,18 +14,21 @@ interface tableProps{
 const arr = 'android,ios,web,web,ios,ios,android'.split(",")
 
 const TableCustomers:FunctionComponent<tableProps> = ({action}) =>{
+    const {data:allCustomers} = useAllCustomersQuery({ count: 5 },{ refetchOnMountOrArgChange: true })
+    console.log(allCustomers)
+
     let thClass = `px-6 py-4 text-left font-normal text-xs`
     const router = useRouter()
 
-    const tableData=(n:string) =>{
+    const tableData=(customer:any) =>{
         const tdClass = `px-6 py-4`
 
-        let colors = n==='android' ? "bg-purple_5 text-purple_400" : n==="ios" ? "bg-teal_green_50 text-teal_green_500" : "bg-orange_50 text-orange_500"
+        // let colors = n==='android' ? "bg-purple_5 text-purple_400" : n==="ios" ? "bg-teal_green_50 text-teal_green_500" : "bg-orange_50 text-orange_500"
 
-        const icons = n==='android' ? <RiAndroidLine/> : n==="ios" ? <RiAppleLine/> : <TbDeviceLaptop/>
+        // const icons = n==='android' ? <RiAndroidLine/> : n==="ios" ? <RiAppleLine/> : <TbDeviceLaptop/>
 
         const routeToCustomer = () =>{
-            router.push('/customers/id')
+            router.push(`/customers/${customer.userId}`)
         }
 
         return (
@@ -35,21 +39,21 @@ const TableCustomers:FunctionComponent<tableProps> = ({action}) =>{
                             <Image src="/avatar.png" width={40} height={40} alt="avatar" className="block"/>
                         </div>
                         <div className="text-sm font-normal">
-                            <div className="text-[#101828]">Last-name First-name</div>
-                            <div className="text-[#475467]">@username</div>
+                            <div className="text-[#101828]">{customer.lastName} {customer.firstName}</div>
+                            <div className="text-[#475467]">@{customer.username}</div>
                         </div>
                     </div>
                 </td>
                 <td className={tdClass}>
                     <div className="flex items-center gap-3 text-gray_500">
                         <Envelope/>
-                        youremail@gmail.com
+                        {customer.email}
                     </div>
                 </td>
                 <td className={tdClass}>
                     <div className="flex items-center gap-3 text-gray_500">
                         <SmartPhone/>
-                        0000000000
+                        {customer.phoneNumber}
                     </div>
                 </td>
                 <td className={`${tdClass}`}>
@@ -58,7 +62,7 @@ const TableCustomers:FunctionComponent<tableProps> = ({action}) =>{
                 <td className={tdClass}>
                     <div className="flex items-center gap-3 text-gray_500">
                         <CalendarOutline/>
-                        29/062023
+                        {customer.createdAt}
                     </div>
                 </td>
                 <td onClick={action} className={tdClass}>
@@ -83,8 +87,8 @@ const TableCustomers:FunctionComponent<tableProps> = ({action}) =>{
             </thead>
 
             <tbody className="w-full">
-                {arr.map(n=>{
-                    return tableData(n)
+                {allCustomers?.allUsers.map((customer:any)=>{
+                    return tableData(customer)
                 })}
             </tbody>
         </table>

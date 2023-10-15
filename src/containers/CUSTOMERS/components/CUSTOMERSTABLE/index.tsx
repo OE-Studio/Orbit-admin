@@ -31,16 +31,16 @@ const CustomersTable2 = () =>{
                 <div className="mt-6 rounded-[12px] overflow-hidden border border-neutral_200 border-collapse border-b-0">
                     <CustomersTab.ContentContainer>
                         <CustomersTab.ContentItem index={1}>
-                            <TableCustomers action={()=>dispatch(toggleVerificationDetails())}/>
+                            <TableCustomers action={()=>dispatch(toggleVerificationDetails(null))}/>
                         </CustomersTab.ContentItem>
                         <CustomersTab.ContentItem index={2}>
-                            <TableCustomers action={()=>dispatch(toggleVerificationDetails())}/>
+                            <TableCustomers action={()=>dispatch(toggleVerificationDetails(null))}/>
                         </CustomersTab.ContentItem>
                         <CustomersTab.ContentItem index={3}>
-                            <TableCustomers action={()=>dispatch(toggleVerificationDetails())}/>
+                            <TableCustomers action={()=>dispatch(toggleVerificationDetails(null))}/>
                         </CustomersTab.ContentItem>
                         <CustomersTab.ContentItem index={4}>
-                            <TableCustomers action={()=>dispatch(toggleVerificationDetails())}/>
+                            <TableCustomers action={()=>dispatch(toggleVerificationDetails(null))}/>
                         </CustomersTab.ContentItem>
                     </CustomersTab.ContentContainer>
                     

@@ -27,5 +27,10 @@ export const sidebarArray:Array<sidebar> = [
         activeIcon:<RiBankFill/>,
         text:"Finance",
         url:"/finance"
+    },
+    {
+        activeIcon:<RiBankFill/>,
+        text:"Services",
+        url:"/services"
     }
 ]

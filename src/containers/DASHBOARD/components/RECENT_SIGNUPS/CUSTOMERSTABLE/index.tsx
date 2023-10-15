@@ -31,15 +31,15 @@ const CustomersTable = () =>{
                 <div className="mt-6 rounded-[12px] overflow-hidden border border-neutral_200 border-collapse border-b-0">
                     <CustomersTab.ContentContainer>
                         <CustomersTab.ContentItem index={1}>
-                            <NewSignup action={()=>dispatch(toggleVerificationDetails())}/> 
+                            <NewSignup action={()=>dispatch(toggleVerificationDetails(null))}/> 
                         </CustomersTab.ContentItem>
 
                         <CustomersTab.ContentItem index={2}>
-                            <AwaitVerification action={()=>dispatch(toggleVerificationDetails())}/>  
+                            <AwaitVerification action={(n)=>dispatch(toggleVerificationDetails(n))}/>  
                         </CustomersTab.ContentItem>
 
                         <CustomersTab.ContentItem index={3}>
-                            <NewlyVerified action={()=>dispatch(toggleVerificationDetails())}/>  
+                            <NewlyVerified action={()=>dispatch(toggleVerificationDetails(null))}/>  
                         </CustomersTab.ContentItem>
                     </CustomersTab.ContentContainer>
                 </div>

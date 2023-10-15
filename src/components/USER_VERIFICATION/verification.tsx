@@ -5,10 +5,26 @@ import Image from "next/image";
 import Detail from "@/components/DETAIL";
 import { Compare, Eraser, Flag, Thumb, Pencil, Loader } from "@/assets/icons";
 import { toggleVerificationDetails, toggleImageDetails, approveVerification } from "@/slices/CUSTOMERS_SLICE/index";
+import { useApproveKYCRequestMutation, useRejectKYCRequestMutation } from "@/slices/VERIFICATON/verificationApiSlice";
 import { useDispatch, useSelector } from "react-redux";
 
-const VerificationDrawer = () =>{
+type currCustomer = {
+    currCustomer:{
+        firstName:string,
+        lastName:string,
+        utilityDoc:string,
+        selfieId:string,
+        userId:string,
+        username:string,
+        email:string,
+        nin:string
+    }
+}
+
+const VerificationDrawer = ({currCustomer}:currCustomer) =>{
     const [showFlagDetails, setShowFlagDetails] = useState(false)
+    const [approveKYCRequest, {isLoading:loadingApproval, isSuccess}] = useApproveKYCRequestMutation()
+    const [rejectKYCRequest, {isLoading:loadingReject}] = useRejectKYCRequestMutation()
 
     const toggleFlagDetails = () => setShowFlagDetails(!showFlagDetails)
 
@@ -17,7 +33,7 @@ const VerificationDrawer = () =>{
     const toggleImagesHandler = () =>{
         dispatch(toggleImageDetails({
             action:"compare",
-            source:{img1:"/NIN.png", img2:"/passport.png"}
+            source:{img1:currCustomer.utilityDoc, img2:currCustomer.selfieId}
         }))
     }
 
@@ -28,7 +44,31 @@ const VerificationDrawer = () =>{
         }))
     }
 
-    const {loadingApprove} = useSelector(state=>state.customers)
+    const approveKYCHandler = async () =>{
+        try{
+            let approvalResponse = approveKYCRequest({
+                reqId:currCustomer.userId
+            }).unwrap()
+            let result = await approvalResponse
+            console.log(result)
+        }
+        catch(err){
+
+        }
+    }
+
+    const rejectKYCHandler = async()=>{
+        try{
+            let rejectResponse = rejectKYCRequest({reqId:currCustomer.userId}).unwrap()
+            let result = await rejectResponse
+            console.log(result)
+        }
+        catch(err){
+            console.log(err)
+        }
+    }
+
+    // const {loadingApprove} = useSelector(state=>state.customers)
 
     return (
         <>
@@ -49,7 +89,7 @@ const VerificationDrawer = () =>{
                     </div>
                 </div>
 
-                <div className="inline-flex justify-center items-center rounded-5px border border-neutral_200 w-9 h-9" onClick={()=>dispatch(toggleVerificationDetails())}>
+                <div className="inline-flex justify-center items-center rounded-5px border border-neutral_200 w-9 h-9" onClick={()=>dispatch(toggleVerificationDetails(null))}>
                     <MdOutlineClose size={16} className="text-gray_400"/>
                 </div>
             </div>
@@ -61,8 +101,8 @@ const VerificationDrawer = () =>{
                         <Image src="/avatar.png" width={40} height={40} alt="avatar" className="block"/>
                     </div>
                     <div className="text-sm font-normal">
-                        <div className="text-[#101828]">Last-name First-name</div>
-                        <div className="text-[#475467]">@username</div>
+                        <div className="text-[#101828]">{currCustomer.lastName} {currCustomer.firstName}</div>
+                        <div className="text-[#475467]">@u{currCustomer.username}</div>
                     </div>
                 </div>
 
@@ -100,22 +140,22 @@ const VerificationDrawer = () =>{
                 <h5>Bio-data</h5>
 
                 <div className="grid grid-cols-2 gap-4 mt-4">
-                    <Detail width="col-span-1" title="Legal first name" value="Emeka"/>
-                    <Detail width="col-span-1" title="Legal last name" value="Emeka"/>
-                    <Detail width="col-span-2" title="Username" value="Emeka" verified={true}/>
-                    <Detail width="col-span-2" title="Email" value="Emeka" verified={true}/>
+                    <Detail width="col-span-1" title="Legal first name" value={currCustomer.firstName}/>
+                    <Detail width="col-span-1" title="Legal last name" value={currCustomer.lastName}/>
+                    <Detail width="col-span-2" title="Username" value={currCustomer.username} verified={true}/>
+                    <Detail width="col-span-2" title="Email" value={currCustomer.email} verified={true}/>
                     <Detail width="col-span-2" title="Phone number" value="Emeka" verified={true}/>
-                    <Detail width="col-span-2" title="vNIN" value="Emeka" verified={true}/>
+                    <Detail width="col-span-2" title="vNIN" value={currCustomer.nin} verified={true}/>
                 </div>
             </div>
 
             <div className="border border-neutral_200 rounded border-b-0 mt-4">
                 <div className="flex gap-4 p-3">
-                    <div onClick={()=>toggleImageHandler('/passport.png')} className="flex items-center justify-center bg-neutral_100">
-                        <Image src="/passport.png" height={100} width={200} alt=""/>
+                    <div onClick={()=>toggleImageHandler(currCustomer.selfieId)} className="flex items-center justify-center bg-neutral_100">
+                        <Image src={currCustomer.selfieId} height={100} width={200} alt=""/>
                     </div>
-                    <div onClick={()=>toggleImageHandler('/NIN.png')} className="flex items-center justify-center bg-neutral_100">
-                        <Image src="/NIN.png" height={100} width={200} alt=""/>
+                    <div onClick={()=>toggleImageHandler(currCustomer.utilityDoc)} className="flex items-center justify-center bg-neutral_100">
+                        <Image src={currCustomer.utilityDoc} height={100} width={200} alt=""/>
                     </div>
                 </div>
 
@@ -157,15 +197,21 @@ const VerificationDrawer = () =>{
                         </button>
                     </div>
                 </div> 
-                : loadingApprove
+                : loadingApproval
                 ?
                 <button className="btn-black rounded-lg h-9 flex items-center justify-center gap-2 w-full">
                         <Loader/>
                         Approving
                 </button>
+                :loadingReject
+                ?
+                <button className="btn-red rounded-lg h-9 flex items-center justify-center gap-2 w-full">
+                    <Loader/>
+                    Denying
+                </button>
                 : 
                 <div className="grid grid-cols-3 gap-4 text-xs">
-                    <button className="btn-red rounded-lg h-9 flex items-center justify-center gap-2">
+                    <button onClick={rejectKYCHandler} className="btn-red rounded-lg h-9 flex items-center justify-center gap-2">
                         <Eraser/>
                         Deny
                     </button>
@@ -173,7 +219,10 @@ const VerificationDrawer = () =>{
                         <Flag/>
                         Flag
                     </button>
-                    <button onClick={()=>dispatch(approveVerification())} className="btn-black rounded-lg h-9 flex items-center justify-center gap-2">
+                    <button onClick={()=>{
+                        approveKYCHandler()
+                        dispatch(approveVerification())
+                    }} className="btn-black rounded-lg h-9 flex items-center justify-center gap-2">
                         <Thumb/>
                         Approve
                     </button>
