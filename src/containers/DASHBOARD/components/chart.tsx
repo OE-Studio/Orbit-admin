@@ -130,7 +130,7 @@ const LineChart = () =>{
         myChart = new Chart(ctx, config)
 
         return ()=>{myChart.destroy()}
-
+        // eslint-disable-next-line
     },[chartType])
     return (
         <div className="border border-neutral_200 mt-6 rounded-[12px]">

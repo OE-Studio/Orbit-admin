@@ -19,7 +19,7 @@ export const SuspendHistory = ({close}:{close:MouseEventHandler})=>{
             <div className="mt-8 space-y-6">
                 {Array(5).fill("").map(n=>{
                     return (
-                        <div className="">
+                        <div key={n} className="">
                             <div className="flex items-center justify-between gap-2 text-xs">
                                 <p>19/03/2023</p>
                                 <p>Active</p>

@@ -22,7 +22,7 @@ const Insights = () =>{
             <div className="col-span-2">
                 <div className="flex gap-6">
                     {cardsArr.map(a=>{
-                        return <InsightCard title={a.title} value={a.value} percent={a.percent}/>
+                        return <InsightCard key={a.title} title={a.title} value={a.value} percent={a.percent}/>
                     })}
                 </div>
 

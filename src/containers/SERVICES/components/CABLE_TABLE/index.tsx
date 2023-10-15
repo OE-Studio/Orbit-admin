@@ -35,7 +35,7 @@ const CableTable = () =>{
                 <tbody>
                     {allCable?.cableProducts?.map((airtime:airtime)=>{
                         return (
-                            <tr>
+                            <tr key={airtime.name}>
                                 <td className={tdClass}>
                                     <div className="flex gap-3 items-center">
                                         <div className="w-10 h-10 rounded flex items-center justify-center border">

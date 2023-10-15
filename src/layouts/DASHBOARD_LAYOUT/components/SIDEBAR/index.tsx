@@ -6,7 +6,7 @@ import Link from "next/link";
 import {RiArrowDownSLine} from "react-icons/ri"
 import styles from './index.module.css'
 
-const Sidebar = ({user}:{user:{}}) =>{
+const Sidebar = ({user}:{user:{role:string, email:string}}) =>{
     return (
         <div className="relative w-64 h-screen overflow-y-scroll inline-block">
             <div className="fixed top-0 left-0 h-screen w-64 overflow-y-scroll bg-neutral_100">
@@ -24,7 +24,7 @@ const Sidebar = ({user}:{user:{}}) =>{
                     <div className="px-7 flex flex-col gap-6 mt-10">
                         {sidebarArray.map(s=>{
                             return (
-                                <Link href={s.url} className="flex items-center justify-between">
+                                <Link key={s.url} href={s.url} className="flex items-center justify-between">
                                     <div className="flex items-center gap-3 text-sm font-medium">
                                         <span className="text-xl">{s.activeIcon}</span>
                                         {s.text}
@@ -41,7 +41,7 @@ const Sidebar = ({user}:{user:{}}) =>{
                     <div className="px-2 flex flex-col gap-6">
                         {sidebarArray.slice(1,3).map(s=>{
                             return (
-                                <Link href={s.url} className="flex items-center justify-between">
+                                <Link key={s.url} href={s.url} className="flex items-center justify-between">
                                     <div className="flex items-center gap-3 text-sm font-medium">
                                         <span className="text-xl">{s.activeIcon}</span>
                                         {s.text}
