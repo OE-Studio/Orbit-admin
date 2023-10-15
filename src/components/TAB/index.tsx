@@ -62,7 +62,7 @@ const ContentContainer = ({children}:{children:ReactNode})=>{
     )
 }
 
-Tab.ContentItem = ({index, children}:{index:number, children:ReactNode})=>{
+const ContentItem = ({index, children}:{index:number, children:ReactNode})=>{
     const {currentTab} = useContext(TabContext)
     return index === currentTab ? <div>{children}</div> : null 
 }
@@ -70,6 +70,7 @@ Tab.ContentItem = ({index, children}:{index:number, children:ReactNode})=>{
 Tab.displayName = "Tab"
 Tab.ContentContainer = ContentContainer
 Tab.Item = Item
+Tab.ContentItem = ContentItem
 Tab.HeadsContainer = HeadsContainer
 
 export default Tab
