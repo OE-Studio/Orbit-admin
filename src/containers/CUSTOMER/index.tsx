@@ -118,19 +118,31 @@ const CustomerContainer = () =>{
                 </div>
             </div>
 
-            <Drawer visible={showFlag}>
+            <Drawer 
+                closeHandler={closeFlagHandler} 
+                visible={showFlag}
+            >
                 <FlagUser close={closeFlagHandler}/>
             </Drawer>
 
-            <Drawer visible={showSuspend}>
+            <Drawer 
+                closeHandler={closeSuspendHandler} 
+                visible={showSuspend}
+            >
                 <SuspendUser close={closeSuspendHandler}/>
             </Drawer>
 
-            <Drawer visible={showFlagHistory}>
+            <Drawer 
+                closeHandler={closeFlagHistory}
+                visible={showFlagHistory}
+            >
                 <FlagHistory close={closeFlagHistory}/>
             </Drawer>
 
-            <Drawer visible={showSuspendHistory}>
+            <Drawer 
+                closeHandler={closeSuspendHistory} 
+                visible={showSuspendHistory}
+            >
                 <SuspendHistory close={closeSuspendHistory}/>
             </Drawer>
         </div>

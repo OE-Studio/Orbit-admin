@@ -5,7 +5,6 @@ import styles from './index.module.css'
 import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
 import { getToken, getUser } from "@/slices/AUTH/authSlice";
-import Link from "next/link";
 
 
 interface props{
@@ -17,15 +16,15 @@ const DashboardLayout:FunctionComponent<props> = ({children}) =>{
     const token = useSelector(getToken)
     const user = useSelector(getUser)
 
-    useEffect(()=>{
-        if(!token) {
-            router.replace("/")
-        }
-    }, [token])
+    // useEffect(()=>{
+    //     if(!token) {
+    //         router.replace("/")
+    //     }
+    // }, [token])
 
-    if(!token) {
-        return <div></div>
-    }
+    // if(!token) {
+    //     return <div></div>
+    // }
 
     return (
             <div className="flex">

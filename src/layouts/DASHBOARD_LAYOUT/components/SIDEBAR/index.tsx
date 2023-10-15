@@ -6,7 +6,7 @@ import Link from "next/link";
 import {RiArrowDownSLine} from "react-icons/ri"
 import styles from './index.module.css'
 
-const Sidebar = ({user}) =>{
+const Sidebar = ({user}:{user:{}}) =>{
     return (
         <div className="relative w-64 h-screen overflow-y-scroll inline-block">
             <div className="fixed top-0 left-0 h-screen w-64 overflow-y-scroll bg-neutral_100">
@@ -58,8 +58,8 @@ const Sidebar = ({user}) =>{
                             <Image src="/avatar.png" width={32} height={32} alt="avatar"/>
                         </div>
                         <div>
-                            <p className="font-medium text-[#4B5768] font-clash-medium">{user.email}</p>
-                            <p className="text-[#A0ABBB] text-xs font-clash-regular capitalize">{user.role}</p>
+                            <p className="font-medium text-[#4B5768] font-clash-medium">{user?.email}</p>
+                            <p className="text-[#A0ABBB] text-xs font-clash-regular capitalize">{user?.role}</p>
                         </div>
                         <div className="w-6 h-6 rounded-5px border border-neutral_200 flex items-center justify-center">
                             <RiArrowDownSLine size={12}/>

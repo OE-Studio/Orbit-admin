@@ -1,10 +1,10 @@
-import React from "react";
+import React, {FunctionComponent} from "react";
 import { HomeOutline, ArrowRight } from "@/assets/icons";
 import styles from './index.module.css'
 
 
 
-const Navbar = () =>{
+const Navbar:FunctionComponent= () =>{
     const colors = "new_green_700,new_green_700,new_green_700".split(",")
 
     

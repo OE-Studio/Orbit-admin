@@ -3,11 +3,22 @@ import { RootState } from "@/store";
 
 export const authSlice = createSlice({
     name:"auth",
-    initialState:{user:null, token:null},
+    initialState:{user:{
+        firstName:"",
+        lastName:"",
+        utilityDoc:"",
+        selfieId:"",
+        userId:"",
+        username:"",
+        email:"",
+        nin:""
+    }, token:null},
     reducers:{
         setUserDetails:(state, {payload})=>{
             state.user = payload.existingAdmin
             state.token = payload.loginToken
+
+            localStorage.setItem("orbadm", payload.existingAdmin)
         },
         // setToken:(state, {payload})=>{
         //     state.token = payload

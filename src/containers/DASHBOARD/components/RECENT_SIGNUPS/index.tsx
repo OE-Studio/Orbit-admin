@@ -9,12 +9,14 @@ import Image from "next/image";
 import { useSelector, useDispatch } from "react-redux";
 import { toggleImageDetails } from "@/slices/CUSTOMERS_SLICE/index";
 import { RootState } from "@/store";
+import { toggleVerificationDetails } from "@/slices/CUSTOMERS_SLICE/index";
 
 const BothImages = ()=>{
     const dispatch = useDispatch()
     const closeImage = () =>{
         dispatch(toggleImageDetails(null))
     }
+    const {image} = useSelector((state:RootState)=>state.customers)
     return (
         <div className="rounded-[12px] overflow-hidden w-9/12">
             <div className="flex items-center justify-between bg-neutral_100 p-6">
@@ -30,10 +32,14 @@ const BothImages = ()=>{
 
             <div className="p-6 flex gap-6 h-auto relative bg-white rounded-b-[12px]">
                 <div className="w-2/3 relative flex items-center">
-                    <Image width={1000} height={500}  src="/NIN.png" className="block" alt="NIN"/>
+                    {image?.source?.img1 
+                    ? <Image width={1000} height={500} src={image.source?.img1} className="block" alt="NIN"/> 
+                    : <div></div>}
                 </div>
                 <div className="w-1/3 relative">
-                    <Image src="/passport.png" width={1000} height={500}  className="block" alt="passport"/>
+                    {image?.source?.img2 
+                    ? <Image width={500} height={1000} src={image.source?.img2} className="block" alt="NIN"/> 
+                    : <div></div>}
                 </div>
             </div>
         </div>
@@ -85,7 +91,9 @@ const DrawerImages = () =>{
 }
 
 const RecentSignups = () =>{
-    const {showVerificationDetails, showImage} = useSelector((state:RootState)=>state.customers)
+    const {showVerificationDetails, showImage, currCustomer} = useSelector((state:RootState)=>state.customers)
+    const dispatch = useDispatch()
+
     return (
         <div>
             <div>Recent Signups</div>
@@ -94,8 +102,12 @@ const RecentSignups = () =>{
                 <CustomersTable/>
             </div>
 
-            <Drawer moreOption={<DrawerImages/>} visible={showVerificationDetails} showDetails={showImage}>
-                <VerificationDrawer/>
+            <Drawer 
+                closeHandler={()=>dispatch(toggleVerificationDetails(null))} moreOption={<DrawerImages/>} 
+                visible={showVerificationDetails} 
+                showDetails={showImage}
+            >
+                <VerificationDrawer currCustomer={currCustomer}/>
             </Drawer>
         </div>
     )

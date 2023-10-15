@@ -1,4 +1,5 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react'
+// import { useRouter } from 'next/router'
 
 // credentials:'include',
 const baseQuery = fetchBaseQuery({
@@ -16,7 +17,10 @@ const baseQuery = fetchBaseQuery({
 const baseQueryWithReAuth = async(args, api, extraOptions)=>{
     let result =  await baseQuery(args, api, extraOptions)
 
-    if(result?.error?.originalStatus === 401){
+    // const router = useRouter()
+
+    if(result?.error?.status === 401){
+        
         console.log('Sending refresh Token')
 
         const refreshResult = await baseQuery("/refresh", api, extraOptions)
@@ -29,6 +33,8 @@ const baseQueryWithReAuth = async(args, api, extraOptions)=>{
             result = await baseQuery(args, api, extraOptions)
         }
         else {
+            console.log("unauthorizwed")
+            // router.replace("/")
             api.dispatch(logout())
         }
     }
