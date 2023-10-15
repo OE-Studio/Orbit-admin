@@ -10,7 +10,8 @@ const months = "Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec".split(',')
 const InsightLineChart = () =>{
     
     useEffect(()=>{
-        let ctx = document.querySelector('#lineChartInsight').getContext('2d')
+        const mycanvas = document.querySelector('#lineChartInsight') as HTMLCanvasElement
+        const ctx = mycanvas.getContext('2d')
 
         const data={
             labels: [...months],
@@ -80,7 +81,6 @@ const InsightLineChart = () =>{
                     tooltip:{
                         enabled:false,
                         position:'nearest',
-                        // external:externalTooltipHandler
                     },
                     legend:{
                         display:false
@@ -90,7 +90,10 @@ const InsightLineChart = () =>{
         }
 
         if(myChart!==null) myChart.destroy()
-        myChart = new Chart(ctx, config)
+        if(ctx){
+            // @ts-ignore
+            myChart = new Chart(ctx, config)
+        }
 
         return ()=>{myChart.destroy()}
 
