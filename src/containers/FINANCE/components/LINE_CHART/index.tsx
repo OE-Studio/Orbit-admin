@@ -10,7 +10,8 @@ const months = "Jan,Feb,Mar,Apr,May,Jun,Jul,Aug,Sep,Oct,Nov,Dec".split(',')
 const FinanceLineChart = () =>{
     
     useEffect(()=>{
-        let ctx = document.querySelector('#lineChartFinance').getContext('2d')
+        let canvas = document.querySelector('#lineChartFinance') as HTMLCanvasElement
+        let ctx = canvas.getContext('2d') as CanvasRenderingContext2D
 
         const data={
             labels: [...months],
@@ -90,6 +91,8 @@ const FinanceLineChart = () =>{
         }
 
         if(myChart!==null) myChart.destroy()
+        
+        // @ts-ignore
         myChart = new Chart(ctx, config)
 
         return ()=>{myChart.destroy()}
