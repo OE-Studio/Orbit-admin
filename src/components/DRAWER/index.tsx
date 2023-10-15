@@ -21,6 +21,7 @@ const Drawer:FunctionComponent<drawerProps> = ({children, moreOption,showDetails
                 }
             })
         }
+        // eslint-disable-next-line
     }, [])
 
     

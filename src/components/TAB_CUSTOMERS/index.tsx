@@ -33,13 +33,13 @@ const CustomersTab = (props:Tab) =>{
     )
 }
 
-CustomersTab.HeadsContainer = ({children}:{children:ReactNode})=>{
+const HeadsContainer = ({children}:{children:ReactNode})=>{
     return (
         <div className={`inline-flex gap-2 text-xs`}>{children}</div>
     )
 }
 
-CustomersTab.Item=({label, index, number}:{label:string, index:number, number:number})=>{
+const Item=({label, index, number}:{label:string, index:number, number:number})=>{
     const {currentTab, onChange} = useContext(TabContext)
 
     const handleChange = () =>{
@@ -56,7 +56,7 @@ CustomersTab.Item=({label, index, number}:{label:string, index:number, number:nu
     )
 }
 
-CustomersTab.ContentContainer = ({children}:{children:ReactNode})=>{
+const ContentContainer = ({children}:{children:ReactNode})=>{
     return (
         <div>
             {children}
@@ -64,9 +64,16 @@ CustomersTab.ContentContainer = ({children}:{children:ReactNode})=>{
     )
 }
 
-CustomersTab.ContentItem = ({index, children}:{index:number, children:ReactNode})=>{
+const ContentItem = ({index, children}:{index:number, children:ReactNode})=>{
     const {currentTab} = useContext(TabContext)
     return index === currentTab ? <div>{children}</div> : null 
 }
+
+CustomersTab.ContentItem = ContentItem
+CustomersTab.Item = Item
+CustomersTab.HeadsContainer = HeadsContainer
+CustomersTab.ContentContainer = ContentContainer
+
+CustomersTab.displayName = "CustomersTab"
 
 export default CustomersTab

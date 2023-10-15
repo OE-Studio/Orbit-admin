@@ -1,9 +1,9 @@
 import React from "react";
 import {FiArrowDown, FiArrowUp} from 'react-icons/fi'
 
-export const InsightCard = ({title, value, percent}:{title:string, value:number, percent:number}) =>{
+export const InsightCard = ({title, value, percent, key}:{title:string, value:number, percent:number, key:string}) =>{
     return (
-        <div className="w-full border border-neutral_200 rounded-lg p-6">
+        <div className="w-full border border-neutral_200 rounded-lg p-6" key={key}>
             <p className="text-sm text-[#475467]">{title}</p>
 
             <div className="flex items-center justify-between w-full mt-8">

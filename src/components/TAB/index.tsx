@@ -32,13 +32,13 @@ const Tab = (props:Tab) =>{
     )
 }
 
-Tab.HeadsContainer = ({children}:{children:ReactNode})=>{
+const HeadsContainer = ({children}:{children:ReactNode})=>{
     return (
         <div className={`inline-flex gap-4 text-xs border-b border-neutral_200`}>{children}</div>
     )
 }
 
-Tab.Item=({label, index}:{label:string, index:number})=>{
+const Item=({label, index}:{label:string, index:number})=>{
     const {currentTab, onChange} = useContext(TabContext)
 
     const handleChange = () =>{
@@ -54,7 +54,7 @@ Tab.Item=({label, index}:{label:string, index:number})=>{
     )
 }
 
-Tab.ContentContainer = ({children}:{children:ReactNode})=>{
+const ContentContainer = ({children}:{children:ReactNode})=>{
     return (
         <div>
             {children}
@@ -66,5 +66,10 @@ Tab.ContentItem = ({index, children}:{index:number, children:ReactNode})=>{
     const {currentTab} = useContext(TabContext)
     return index === currentTab ? <div>{children}</div> : null 
 }
+
+Tab.displayName = "Tab"
+Tab.ContentContainer = ContentContainer
+Tab.Item = Item
+Tab.HeadsContainer = HeadsContainer
 
 export default Tab

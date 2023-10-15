@@ -39,7 +39,7 @@ const Referrals = () =>{
                     <tbody>
                         {[1,2,3,4,5,6,7].map(num=>{
                             return(
-                                <tr className="text-gray_200 text-sm font-medium border border-collapse border-neutral_200 border-x-0">
+                                <tr key={num} className="text-gray_200 text-sm font-medium border border-collapse border-neutral_200 border-x-0">
                                     <td className="py-4 pl-3">Oluwafeyikemi</td>
                                     <td className="py-4">4th Novemebr, 2022 / 4:40pm </td>
                                     <td className="py-4 text-right pr-3">N 1,000,000.00</td>
