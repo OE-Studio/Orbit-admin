@@ -1,11 +1,12 @@
 import React, {useEffect} from "react";
 import Chart from 'chart.js/auto';
 
-let myChart = null
+let myChart:any = null
 
 const PieChart = () =>{
     useEffect(()=>{
-        let ctx = document.querySelector('#pieChartFull').getContext('2d')
+        let canvas = document.querySelector('#pieChartFull') as HTMLCanvasElement
+        let ctx = canvas.getContext('2d') as CanvasRenderingContext2D
 
         const data={
             labels: ["verified", "unverified"],
@@ -46,6 +47,7 @@ const PieChart = () =>{
 
         if(myChart!==null) myChart.destroy()
 
+        // @ts-ignore
         myChart = new Chart(ctx, config)
 
         return ()=>{myChart.destroy()}
