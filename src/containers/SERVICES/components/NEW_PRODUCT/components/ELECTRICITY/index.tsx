@@ -1,7 +1,9 @@
-import React, {useState, ChangeEvent} from "react";
+import React, {useState, ChangeEvent, useEffect} from "react";
 import Input from "../../../../../../components/INPUT";
-import {useNewElectricityMutation} from "@/slices/SERVICES_SLICE/servicesApiSlice"
+import {useNewElectricityMutation, useEditProductMutation} from "@/slices/SERVICES_SLICE/servicesApiSlice"
 import { useDispatch } from "react-redux";
+import { useContext } from "react";
+import { ProductContext } from "@/containers/SERVICES";
 
 const NewElectricity = () =>{
     const [values, setValues] = useState({
@@ -24,6 +26,15 @@ const NewElectricity = () =>{
         })
     }
 
+    const {mode, product_type, product} = useContext(ProductContext)
+
+     useEffect(()=>{
+        if (mode==='edit' && product_type === 'electricity'){
+            setValues({...product})
+        }
+        
+     },[mode, product])
+
     const [newElectricity, {isLoading}] = useNewElectricityMutation()
 
     const createElectricity = async (e:any) =>{
@@ -35,6 +46,20 @@ const NewElectricity = () =>{
         }
         catch(err){
 
+        }
+    }
+
+    let [editProduct] = useEditProductMutation()
+
+    const editHandler = async (e:any) =>{
+        e.preventDefault()
+        try{
+            let editAirtime = editProduct({...values, model:'electricity'}).unwrap()
+            let result = await editAirtime
+            console.log(result)
+        }
+        catch(err){
+            
         }
     }
 
@@ -142,7 +167,11 @@ const NewElectricity = () =>{
                 onChange={changeHandler}
             />
 
-            <button className="btn-black rounded-lg h-11 flex items-center justify-center gap-2 w-full mt-6 font-semibold text-base" onClick={createElectricity}>Create</button>
+            <button
+                className="btn-black rounded-lg h-11 flex items-center justify-center gap-2 w-full mt-6 font-semibold text-base"
+                onClick={mode === 'edit' ? editHandler :createElectricity}>
+                {isLoading ? "Loading..." : `${mode === 'edit' ? 'Edit' : 'Create'}`}
+            </button>
             </form>
         </div>
     )

@@ -10,7 +10,7 @@ type InputProps = {
 } & Omit<React.InputHTMLAttributes<HTMLInputElement>, "placeholder">
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-    ({type, label, errors, name, required, className, onChange, ...props}, ref)=>{
+    ({type, label, errors, name, required, className, onChange, value, ...props}, ref)=>{
         const inputRef = useRef<HTMLInputElement>(null)
         const [inputType, setInputType] = useState(type)
         const [showPassword, setShowPassword] = useState(false)
@@ -20,21 +20,24 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             if(!e.target.value){
                 setFocused(false)
             }
+            else{
+                setFocused(true)
+            }
         }
 
         useEffect(()=>{
+            if(value){
+                setFocused(true)
+            }
+
             if (type === "password" && showPassword){
                 setInputType("text")
             }
             else if(type === "password" && !showPassword) {
                 setInputType("password")
             }
-
-            if(inputRef?.current?.value){
-                setFocused(true)
-            }
             
-        }, [type, showPassword])
+        }, [type, showPassword, value])
 
         useImperativeHandle(ref, ()=> inputRef.current!)
 
@@ -51,6 +54,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
                         onFocus={()=>setFocused(true)}
                         onBlur={checkValue}
                         onChange={onChange}
+                        value={value}
                         {...props}
                     />
                     <label 

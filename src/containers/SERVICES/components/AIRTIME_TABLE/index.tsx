@@ -1,11 +1,17 @@
 import { useGetAirtimeQuery } from "@/slices/SERVICES_SLICE/servicesApiSlice"
 import { PencilIcon, BagIcon } from "@/assets/icons"
+import { useContext } from "react"
+import { ProductContext } from "../.."
+import { dateConverter } from "@/utils"
 
 interface airtime {
     name:string,
     description:string,
     provider_name:string,
-    status:string
+    status:string,
+    cost_price:number,
+    selling_price:number,
+    createdAt:Date
 }
 
 const AirtimeTable = () =>{
@@ -14,6 +20,12 @@ const AirtimeTable = () =>{
 
     const {data:allAirtimes, isLoading} = useGetAirtimeQuery(null)
     console.log(allAirtimes)
+
+    const {onChange} = useContext(ProductContext)
+
+    const editAirtime = (airtime:airtime) =>{
+        onChange('edit', airtime, 'airtime')
+    }
 
     return (
         <div className="w-full">
@@ -26,10 +38,12 @@ const AirtimeTable = () =>{
             <table className="w-full">
                 <thead className="bg-gray_50 text-gray_600 rounded-t-lg">
                     <tr>
+                        <th className={thClass}>Date</th>
                         <th className={thClass}>Name</th>
                         <th className={thClass}>Provider</th>
                         <th className={thClass}>Status</th>
-                        <th className={thClass}>Tiers</th>
+                        <th className={thClass}>Cost Price</th>
+                        <th className={thClass}>Selling Price</th>
                         <th className={thClass}></th>
                     </tr>
                 </thead>
@@ -37,6 +51,9 @@ const AirtimeTable = () =>{
                     {allAirtimes?.map((airtime:airtime)=>{
                         return (
                             <tr  className="border-t border-collapse border-x-0" key={airtime.name}>
+                                <td className={tdClass}>
+                                    <div>{dateConverter(airtime.createdAt)}</div>
+                                </td>
                                 <td className={tdClass}>
                                     <div className="flex gap-3 items-center">
                                         <div className="w-10 h-10 rounded flex items-center justify-center border">
@@ -58,10 +75,13 @@ const AirtimeTable = () =>{
                                     </div>
                                 </td>
                                 <td className={tdClass}>
-                                    <div>T1-500</div>
+                                    <div>&#8358; {airtime.cost_price}</div>
                                 </td>
                                 <td className={tdClass}>
-                                    <div><PencilIcon/></div>
+                                    <div>&#8358; {airtime.selling_price}</div>
+                                </td>
+                                <td className={tdClass}>
+                                    <div onClick={()=>editAirtime(airtime)}><PencilIcon/></div>
                                 </td>
                             </tr>
                         )

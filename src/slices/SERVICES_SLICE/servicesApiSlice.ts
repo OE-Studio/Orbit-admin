@@ -44,6 +44,13 @@ export const servicesApiSlice = apiSlice.injectEndpoints({
         }),
         getCable:builder.query({
             query:()=>`https://orbit-finance-api.herokuapp.com/admin/api/v1/products/cable`
+        }),
+        editProduct:builder.mutation({
+            query:credentials=>({
+                url:`edit_products?token=${token}`,
+                method:'POST',
+                body:{...credentials}
+            })
         })
     })
 })
@@ -56,4 +63,4 @@ export const {
     useGetAirtimeQuery, 
     useGetDataQuery, 
     useGetElectricityQuery, 
-    useGetCableQuery} = servicesApiSlice
+    useGetCableQuery, useEditProductMutation} = servicesApiSlice

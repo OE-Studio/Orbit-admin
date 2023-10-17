@@ -1,7 +1,9 @@
-import React, {useState, ChangeEvent} from "react";
+import React, {useState, ChangeEvent, useEffect} from "react";
 import Input from "../../../../../../components/INPUT";
-import {useNewCableMutation} from "@/slices/SERVICES_SLICE/servicesApiSlice"
+import {useNewCableMutation, useEditProductMutation} from "@/slices/SERVICES_SLICE/servicesApiSlice"
 import { useDispatch } from "react-redux";
+import { useContext } from "react";
+import { ProductContext } from "@/containers/SERVICES";
 
 const NewCable = () =>{
     const [values, setValues] = useState({
@@ -16,13 +18,22 @@ const NewCable = () =>{
         cable_type:"",
         product_id:""
     })
+
     const changeHandler = (e:ChangeEvent<HTMLInputElement>) =>{
         setValues(prev=>{
             return {...prev, [e.target.name]:e.target.value}
         })
     }
 
+    // Context for product
     let [newCable, {isLoading, isSuccess}] = useNewCableMutation()
+
+    const {mode, product_type, product} = useContext(ProductContext)
+     useEffect(()=>{
+        if (mode==='edit' && product_type === 'cable'){
+            setValues({...product})
+        }
+     },[mode])
 
     const createCable = async (e:any)=>{
         e.preventDefault()
@@ -33,6 +44,20 @@ const NewCable = () =>{
         }
         catch(err){
 
+        }
+    }
+
+    let [editProduct] = useEditProductMutation()
+
+    const editHandler = async (e:any) =>{
+        e.preventDefault()
+        try{
+            let editAirtime = editProduct({...values, model:'airtime'}).unwrap()
+            let result = await editAirtime
+            console.log(result)
+        }
+        catch(err){
+            
         }
     }
     return (
@@ -122,7 +147,11 @@ const NewCable = () =>{
                 />
             </div>
 
-            <button className="btn-black rounded-lg h-11 flex items-center justify-center gap-2 w-full mt-6 font-semibold text-base" onClick={createCable}>Create</button>
+            <button
+                className="btn-black rounded-lg h-11 flex items-center justify-center gap-2 w-full mt-6 font-semibold text-base"
+                onClick={mode === 'edit' ? editHandler :createCable}>
+                {isLoading ? "Loading..." : `${mode === 'edit' ? 'Edit' : 'Create'}`}
+            </button>
             </form>
         </div>
     )
