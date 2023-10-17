@@ -117,7 +117,7 @@ export const ServicesContainer = () =>{
                     </button>
                 </div>
 
-                <div className="w-full">
+                <div className="w-full mt-5">
                     <Tab currentTab={1}>
                         <Tab.HeadsContainer>
                             <Tab.Item label="Airtime" index={1}></Tab.Item>
@@ -126,7 +126,7 @@ export const ServicesContainer = () =>{
                             <Tab.Item label="Cable Subscription" index={4}></Tab.Item>
                         </Tab.HeadsContainer>
 
-                        <div className="mt-7">
+                        <div className="mt-5">
                             <Tab.ContentContainer>
                                 <Tab.ContentItem index={1}>
                                     <AirtimeTable/>
