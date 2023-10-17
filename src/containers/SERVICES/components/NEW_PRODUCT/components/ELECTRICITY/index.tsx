@@ -5,21 +5,23 @@ import { useDispatch } from "react-redux";
 import { useContext } from "react";
 import { ProductContext } from "@/containers/SERVICES";
 
+const electricityObj = {
+    name:"",
+    description:"",
+    plan_type:"",
+    provider_name:"",
+    provider_id:"",
+    validity:"",
+    cost_price:0,
+    selling_price:0,
+    product_id:"",
+    status:"active",
+    state:"",
+    meter_type:""
+}
+
 const NewElectricity = () =>{
-    const [values, setValues] = useState({
-        name:"",
-        description:"",
-        plan_type:"",
-        provider_name:"",
-        provider_id:"",
-        validity:"",
-        cost_price:0,
-        selling_price:0,
-        product_id:"",
-        status:"active",
-        state:"",
-        meter_type:""
-    })
+    const [values, setValues] = useState(electricityObj)
     const changeHandler = (e:any) =>{
         setValues(prev=>{
             return {...prev, [e.target.name]:e.target.value}
@@ -40,23 +42,28 @@ const NewElectricity = () =>{
     const createElectricity = async (e:any) =>{
         e.preventDefault()
         try{
-            let electricity = newElectricity(values).unwrap
+            let electricity = newElectricity(values).unwrap()
             let result = await electricity
-            console.log(result)
+
+            if(result.success){
+                setValues(electricityObj)
+            }
         }
         catch(err){
 
         }
     }
 
-    let [editProduct] = useEditProductMutation()
+    let [editProduct, {isLoading:loadingEdit}] = useEditProductMutation()
 
     const editHandler = async (e:any) =>{
         e.preventDefault()
         try{
             let editAirtime = editProduct({...values, model:'electricity'}).unwrap()
             let result = await editAirtime
-            console.log(result)
+            if(result.success){
+                setValues(electricityObj)
+            }
         }
         catch(err){
             
@@ -170,7 +177,7 @@ const NewElectricity = () =>{
             <button
                 className="btn-black rounded-lg h-11 flex items-center justify-center gap-2 w-full mt-6 font-semibold text-base"
                 onClick={mode === 'edit' ? editHandler :createElectricity}>
-                {isLoading ? "Loading..." : `${mode === 'edit' ? 'Edit' : 'Create'}`}
+                {isLoading || loadingEdit ? "Loading..." : `${mode === 'edit' ? 'Edit' : 'Create'}`}
             </button>
             </form>
         </div>

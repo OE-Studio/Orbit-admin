@@ -51,14 +51,16 @@ const NewAirtime = () =>{
         }
     }
 
-    let [editProduct] = useEditProductMutation()
+    let [editProduct, {isLoading:loadingEdit}] = useEditProductMutation()
 
     const editHandler = async (e) =>{
         e.preventDefault()
         try{
             let editAirtime = editProduct({...values, model:'airtime'}).unwrap()
             let result = await editAirtime
-            console.log(result)
+            if(result.success){
+                setValues(airtimeObj)
+            }
         }
         catch(err){
             
@@ -147,7 +149,7 @@ const NewAirtime = () =>{
             <button
                 className="btn-black rounded-lg h-11 flex items-center justify-center gap-2 w-full mt-6 font-semibold text-base"
                 onClick={mode === 'edit' ? editHandler :createAirtime}>
-                {isLoading ? "Loading..." : `${mode === 'edit' ? 'Edit' : 'Create'}`}
+                {isLoading || loadingEdit ? "Loading..." : `${mode === 'edit' ? 'Edit' : 'Create'}`}
             </button>
             </form>
         </div>
