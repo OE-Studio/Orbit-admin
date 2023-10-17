@@ -1,7 +1,9 @@
-import React, {useState, ChangeEvent} from "react";
+import React, {useState, ChangeEvent, useEffect} from "react";
 import Input from "../../../../../../components/INPUT";
-import {useNewDataMutation} from "@/slices/SERVICES_SLICE/servicesApiSlice"
+import {useNewDataMutation, useEditProductMutation} from "@/slices/SERVICES_SLICE/servicesApiSlice"
 import { useDispatch } from "react-redux";
+import { useContext } from "react";
+import { ProductContext } from "@/containers/SERVICES";
 
 const NewData = () =>{
     const [values, setValues] = useState({
@@ -20,6 +22,16 @@ const NewData = () =>{
             return {...prev, [e.target.name]:e.target.value}
         })
     }
+
+    const {mode, product_type, product} = useContext(ProductContext)
+
+     useEffect(()=>{
+        if (mode==='edit' && product_type === 'data'){
+            setValues({...product})
+        }
+        
+     },[mode, product])
+
     let [newData, {isLoading, isSuccess}] = useNewDataMutation()
 
     const createData = async (e:any) =>{
@@ -31,6 +43,20 @@ const NewData = () =>{
         }
         catch(err){
 
+        }
+    }
+
+    let [editProduct] = useEditProductMutation()
+
+    const editHandler = async (e:any) =>{
+        e.preventDefault()
+        try{
+            let editAirtime = editProduct({...values, model:'data'}).unwrap()
+            let result = await editAirtime
+            console.log(result)
+        }
+        catch(err){
+            
         }
     }
 
@@ -113,7 +139,11 @@ const NewData = () =>{
                 />
             </div>
 
-            <button className="btn-black rounded-lg h-11 flex items-center justify-center gap-2 w-full mt-6 font-semibold text-base" onClick={createData}>Create</button>
+            <button
+                className="btn-black rounded-lg h-11 flex items-center justify-center gap-2 w-full mt-6 font-semibold text-base"
+                onClick={mode === 'edit' ? editHandler :createData}>
+                {isLoading ? "Loading..." : `${mode === 'edit' ? 'Edit' : 'Create'}`}
+            </button>
             </form>
         </div>
     )

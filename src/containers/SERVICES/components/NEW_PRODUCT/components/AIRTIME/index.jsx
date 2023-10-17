@@ -1,26 +1,38 @@
-import React, {useState, ChangeEvent} from "react";
+import React, {useState, useEffect} from "react";
 import Input from "../../../../../../components/INPUT";
-import {useNewAirtimeMutation} from "@/slices/SERVICES_SLICE/servicesApiSlice"
+import {useNewAirtimeMutation, useEditProductMutation} from "@/slices/SERVICES_SLICE/servicesApiSlice"
 import { useDispatch } from "react-redux";
+import { useContext } from "react";
+import { ProductContext } from "@/containers/SERVICES";
 
+const airtimeObj = {
+    name:"",
+    description:"",
+    airtime_type:"",
+    provider_name:"",
+    provider_id:"",
+    validity:"",
+    cost_price:0,
+    selling_price:0,
+    product_id:""
+}
 
 const NewAirtime = () =>{
-    const [values, setValues] = useState({
-        name:"",
-        description:"",
-        airtime_type:"",
-        provider_name:"",
-        provider_id:"",
-        validity:"",
-        cost_price:0,
-        selling_price:0,
-        product_id:""
-    })
+    const [values, setValues] = useState(airtimeObj)
+    
     const changeHandler = (e) =>{
+        console.log(e.target.value)
         setValues(prev=>{
             return {...prev, [e.target.name]:e.target.value}
         })
     }
+
+    const {mode, product_type, product} = useContext(ProductContext)
+     useEffect(()=>{
+        if (mode==='edit' && product_type === 'airtime'){
+            setValues({...product})
+        }
+     },[mode])
 
     let [newAirtime, {isLoading, isSuccess}] = useNewAirtimeMutation()
 
@@ -29,12 +41,30 @@ const NewAirtime = () =>{
         try{
             let airtime = newAirtime(values).unwrap()
             let result = await airtime
+            
+            if(result.success){
+                setValues(airtimeObj)
+            }
+        }
+        catch(err){
+            
+        }
+    }
+
+    let [editProduct] = useEditProductMutation()
+
+    const editHandler = async (e) =>{
+        e.preventDefault()
+        try{
+            let editAirtime = editProduct({...values, model:'airtime'}).unwrap()
+            let result = await editAirtime
             console.log(result)
         }
         catch(err){
             
         }
     }
+
     return (
         <div>
             <form action="">
@@ -116,8 +146,8 @@ const NewAirtime = () =>{
 
             <button
                 className="btn-black rounded-lg h-11 flex items-center justify-center gap-2 w-full mt-6 font-semibold text-base"
-                onClick={createAirtime}>
-                {isLoading ? "Loading..." : "Create"}
+                onClick={mode === 'edit' ? editHandler :createAirtime}>
+                {isLoading ? "Loading..." : `${mode === 'edit' ? 'Edit' : 'Create'}`}
             </button>
             </form>
         </div>

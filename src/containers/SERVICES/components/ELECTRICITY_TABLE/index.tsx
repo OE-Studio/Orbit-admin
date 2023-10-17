@@ -1,11 +1,15 @@
 import { useGetElectricityQuery } from "@/slices/SERVICES_SLICE/servicesApiSlice"
 import { PencilIcon, BagIcon } from "@/assets/icons"
+import { useContext } from "react"
+import { ProductContext } from "../.."
 
 interface airtime {
     name:string,
     description:string,
     provider_name:string,
-    status:string
+    status:string,
+    cost_price:number,
+    selling_price:number
 }
 
 const ElectricityTable = () =>{
@@ -13,7 +17,11 @@ const ElectricityTable = () =>{
     let thClass = `px-6 py-4 text-left font-normal text-xs`
 
     const {data:allElectricity, isLoading} = useGetElectricityQuery(null)
-    console.log(allElectricity)
+    
+    const {onChange} = useContext(ProductContext)
+    const editElectric = (airtime:airtime) =>{
+        onChange('edit', airtime, 'electricity')
+    }
 
     return (
         <div className="w-full">
@@ -28,7 +36,8 @@ const ElectricityTable = () =>{
                         <th className={thClass}>Name</th>
                         <th className={thClass}>Provider</th>
                         <th className={thClass}>Status</th>
-                        <th className={thClass}>Tiers</th>
+                        <th className={thClass}>Cost Price</th>
+                        <th className={thClass}>Selling Price</th>
                         <th className={thClass}></th>
                     </tr>
                 </thead>
@@ -51,34 +60,23 @@ const ElectricityTable = () =>{
                                     <div>{airtime.provider_name}</div>
                                 </td>
                                 <td className={tdClass}>
-                                    <div>{airtime.status}</div>
+                                <div className={`inline-flex items-center px-2 py-1 rounded-full gap-1.5 capitalize text-xs font-medium ${airtime.status === 'active' ? 'bg-green_50' : 'bg-orange_50'}`}>
+                                        <div className={`w-1.5 h-1.5 rounded-full ${airtime.status === 'active' ? 'bg-[#027A48]' : 'bg-[#B93815]'}`}></div>
+                                        <div className={airtime.status === 'active' ? 'text-[#027A48]' : 'text-[#B93815]'}>{airtime.status}</div>
+                                    </div>
                                 </td>
                                 <td className={tdClass}>
-                                    <div>T1-500</div>
+                                    <div>&#8358; {airtime.cost_price}</div>
                                 </td>
                                 <td className={tdClass}>
-                                    <div><PencilIcon/></div>
+                                    <div>&#8358; {airtime.selling_price}</div>
+                                </td>
+                                <td className={tdClass}>
+                                    <div onClick={()=>editElectric(airtime)}><PencilIcon/></div>
                                 </td>
                             </tr>
                         )
                     })}
-                    {/* <tr>
-                        <td className={tdClass}>
-                            <div>{airtime.name}</div>
-                        </td>
-                        <td className={tdClass}>
-                            <div>{airtime.provider_name}</div>
-                        </td>
-                        <td className={tdClass}>
-                            <div>{airtime.status}</div>
-                        </td>
-                        <td className={tdClass}>
-                            <div>T1-500</div>
-                        </td>
-                        <td className={tdClass}>
-                            <div>Pen</div>
-                        </td>
-                    </tr> */}
                 </tbody>
             </table>
         </div>
