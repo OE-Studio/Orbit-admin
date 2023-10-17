@@ -5,18 +5,20 @@ import { useDispatch } from "react-redux";
 import { useContext } from "react";
 import { ProductContext } from "@/containers/SERVICES";
 
+const dataObj = {
+    name:"",
+    description:"",
+    plan_type:"",
+    provider_name:"",
+    provider_id:"",
+    validity:"",
+    cost_price:0,
+    selling_price:0,
+    product_id:""
+}
+
 const NewData = () =>{
-    const [values, setValues] = useState({
-        name:"",
-        description:"",
-        plan_type:"",
-        provider_name:"",
-        provider_id:"",
-        validity:"",
-        cost_price:0,
-        selling_price:0,
-        product_id:""
-    })
+    const [values, setValues] = useState(dataObj)
     const changeHandler = (e:ChangeEvent<HTMLInputElement>) =>{
         setValues(prev=>{
             return {...prev, [e.target.name]:e.target.value}
@@ -39,21 +41,25 @@ const NewData = () =>{
         try{
             let datas = await newData(values).unwrap()
             let result = await datas
-            console.log(result)
+            if(result.success){
+                setValues(dataObj)
+            }
         }
         catch(err){
 
         }
     }
 
-    let [editProduct] = useEditProductMutation()
+    let [editProduct, {isLoading:loadingEdit}] = useEditProductMutation()
 
     const editHandler = async (e:any) =>{
         e.preventDefault()
         try{
             let editAirtime = editProduct({...values, model:'data'}).unwrap()
             let result = await editAirtime
-            console.log(result)
+            if(result.success){
+                setValues(dataObj)
+            }
         }
         catch(err){
             
@@ -142,7 +148,7 @@ const NewData = () =>{
             <button
                 className="btn-black rounded-lg h-11 flex items-center justify-center gap-2 w-full mt-6 font-semibold text-base"
                 onClick={mode === 'edit' ? editHandler :createData}>
-                {isLoading ? "Loading..." : `${mode === 'edit' ? 'Edit' : 'Create'}`}
+                {isLoading || loadingEdit ? "Loading..." : `${mode === 'edit' ? 'Edit' : 'Create'}`}
             </button>
             </form>
         </div>
