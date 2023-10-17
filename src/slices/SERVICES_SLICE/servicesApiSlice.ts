@@ -51,6 +51,13 @@ export const servicesApiSlice = apiSlice.injectEndpoints({
                 method:'POST',
                 body:{...credentials}
             })
+        }),
+        deleteProduct:builder.mutation({
+            query:credentials=>({
+                url:`product?token=${token}`,
+                method:'DELETE',
+                body:{...credentials}
+            })
         })
     })
 })
@@ -63,4 +70,7 @@ export const {
     useGetAirtimeQuery, 
     useGetDataQuery, 
     useGetElectricityQuery, 
-    useGetCableQuery, useEditProductMutation} = servicesApiSlice
+    useGetCableQuery, 
+    useEditProductMutation,
+    useDeleteProductMutation
+} = servicesApiSlice
