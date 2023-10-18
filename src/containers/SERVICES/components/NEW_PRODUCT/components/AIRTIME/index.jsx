@@ -4,6 +4,9 @@ import {useNewAirtimeMutation, useEditProductMutation} from "@/slices/SERVICES_S
 import { useDispatch } from "react-redux";
 import { useContext } from "react";
 import { ProductContext } from "@/containers/SERVICES";
+import { NotificationContext } from "@/layouts/DASHBOARD_LAYOUT";
+import { updateAirtime } from "@/slices/SERVICES_SLICE/servicesApiSlice";
+
 
 const airtimeObj = {
     name:"",
@@ -19,9 +22,11 @@ const airtimeObj = {
 
 const NewAirtime = () =>{
     const [values, setValues] = useState(airtimeObj)
+    const {toggleNotification} = useContext(NotificationContext)
+    const dispatch = useDispatch()
     
     const changeHandler = (e) =>{
-        console.log(e.target.value)
+        // console.log(e.target.value)
         setValues(prev=>{
             return {...prev, [e.target.name]:e.target.value}
         })
@@ -44,10 +49,25 @@ const NewAirtime = () =>{
             
             if(result.success){
                 setValues(airtimeObj)
+                toggleNotification({showNotification:true,
+                    title:"Airtime Plan Created",
+                    text:result.message,
+                    status:"success"}
+                )
+                // dispatch(updateAirtime([result.createProduct]))
+                // console.log(result.createProduct)
+                
+            }
+            else{
+                throw new Error(result.message)
             }
         }
         catch(err){
-            
+            console.log(err)
+            // toggleNotification({showNotification:true,
+            //     title:"Airtime Plan Failed",
+            //     text:err.data.message,
+            //     status:"failed"})
         }
     }
 
@@ -59,11 +79,17 @@ const NewAirtime = () =>{
             let editAirtime = editProduct({...values, model:'airtime'}).unwrap()
             let result = await editAirtime
             if(result.success){
-                setValues(airtimeObj)
+                toggleNotification({showNotification:true,
+                    title:"Airtime Plan Updated",
+                    text:result.message,
+                    status:"success"})
             }
         }
         catch(err){
-            
+            toggleNotification({showNotification:true,
+                title:"Airtime Plan Update Failed",
+                text:err.data.message,
+                status:"failed"})
         }
     }
 

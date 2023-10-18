@@ -24,7 +24,7 @@ const AirtimeTable = () =>{
     let thClass = `px-6 py-4 text-left font-normal text-xs`
 
     const {data:allAirtimes, isLoading} = useGetAirtimeQuery(null)
-    console.log(allAirtimes)
+    // console.log(allAirtimes)
 
     const {onChange} = useContext(ProductContext)
 

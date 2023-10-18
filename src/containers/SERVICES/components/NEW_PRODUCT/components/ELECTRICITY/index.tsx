@@ -3,6 +3,7 @@ import Input from "../../../../../../components/INPUT";
 import {useNewElectricityMutation, useEditProductMutation} from "@/slices/SERVICES_SLICE/servicesApiSlice"
 import { useDispatch } from "react-redux";
 import { useContext } from "react";
+import { NotificationContext } from "@/layouts/DASHBOARD_LAYOUT";
 import { ProductContext } from "@/containers/SERVICES";
 
 const electricityObj = {
@@ -22,6 +23,8 @@ const electricityObj = {
 
 const NewElectricity = () =>{
     const [values, setValues] = useState(electricityObj)
+    const {toggleNotification} = useContext(NotificationContext)
+
     const changeHandler = (e:any) =>{
         setValues(prev=>{
             return {...prev, [e.target.name]:e.target.value}
@@ -47,10 +50,18 @@ const NewElectricity = () =>{
 
             if(result.success){
                 setValues(electricityObj)
+                toggleNotification({showNotification:true,
+                    title:"Electricity Plan Created",
+                    text:result.message,
+                    status:"success"})
             }
+            else throw new Error(result)
         }
-        catch(err){
-
+        catch(err:any){
+            toggleNotification({showNotification:true,
+                title:"Electricity Plan Failed",
+                text:err.data.message,
+                status:"failed"})
         }
     }
 
@@ -62,11 +73,19 @@ const NewElectricity = () =>{
             let editAirtime = editProduct({...values, model:'electricity'}).unwrap()
             let result = await editAirtime
             if(result.success){
-                setValues(electricityObj)
+                toggleNotification({showNotification:true,
+                    title:"Electricity Plan Updated",
+                    text:result.message,
+                    status:"success"})
             }
+            else throw new Error(result)
         }
-        catch(err){
-            
+        catch(err:any){
+            // console.log({err})
+            // toggleNotification({showNotification:true,
+            //     title:"Electricity Plan Update Failed",
+            //     text:err.data.message,
+            //     status:"failed"})
         }
     }
 

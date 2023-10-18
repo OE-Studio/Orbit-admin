@@ -68,7 +68,7 @@ const DataTable = () =>{
                     </tr>
                 </thead>
                 <tbody>
-                    {allDatas?.dataProducts?.map((airtime:airtime)=>{
+                    {!isLoading && allDatas.map((airtime:airtime)=>{
                         return (
                             <tr className="border-t border-collapse border-x-0" key={airtime.name}>
                                 <td className={tdClass}>

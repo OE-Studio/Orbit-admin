@@ -17,16 +17,16 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         const [focused, setFocused] = useState(false)
 
         const checkValue=(e:any)=>{
-            if(!e.target.value){
-                setFocused(false)
+            if(e.target.value || e.target.value === 0){
+                setFocused(true)
             }
             else{
-                setFocused(true)
+                setFocused(false)
             }
         }
 
         useEffect(()=>{
-            if(value){
+            if(value || value === 0){
                 setFocused(true)
             }
 
