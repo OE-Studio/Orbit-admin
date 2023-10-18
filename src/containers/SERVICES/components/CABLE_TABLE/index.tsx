@@ -67,7 +67,7 @@ const CableTable = () =>{
                     </tr>
                 </thead>
                 <tbody>
-                    {allCable?.cableProducts?.map((airtime:airtime)=>{
+                    {!isLoading && allCable.map((airtime:airtime)=>{
                         return (
                             <tr className="border-t border-collapse border-x-0" key={airtime.name}>
                                 <td className={tdClass}>

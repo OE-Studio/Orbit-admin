@@ -15,7 +15,7 @@ const arr = 'android,ios,web,web,ios,ios,android'.split(",")
 
 const TableCustomers:FunctionComponent<tableProps> = ({action}) =>{
     const {data:allCustomers} = useAllCustomersQuery({ count: 5 },{ refetchOnMountOrArgChange: true })
-    console.log(allCustomers)
+    // console.log(allCustomers)
 
     let thClass = `px-6 py-4 text-left font-normal text-xs`
     const router = useRouter()

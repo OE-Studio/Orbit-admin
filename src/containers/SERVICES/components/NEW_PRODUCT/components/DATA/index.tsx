@@ -3,6 +3,7 @@ import Input from "../../../../../../components/INPUT";
 import {useNewDataMutation, useEditProductMutation} from "@/slices/SERVICES_SLICE/servicesApiSlice"
 import { useDispatch } from "react-redux";
 import { useContext } from "react";
+import { NotificationContext } from "@/layouts/DASHBOARD_LAYOUT";
 import { ProductContext } from "@/containers/SERVICES";
 
 const dataObj = {
@@ -18,7 +19,9 @@ const dataObj = {
 }
 
 const NewData = () =>{
+    const {toggleNotification} = useContext(NotificationContext)
     const [values, setValues] = useState(dataObj)
+
     const changeHandler = (e:ChangeEvent<HTMLInputElement>) =>{
         setValues(prev=>{
             return {...prev, [e.target.name]:e.target.value}
@@ -43,10 +46,18 @@ const NewData = () =>{
             let result = await datas
             if(result.success){
                 setValues(dataObj)
+                toggleNotification({showNotification:true,
+                    title:"Data Plan Created",
+                    text:result.message,
+                    status:"success"})
             }
+            else throw new Error(result)
         }
-        catch(err){
-
+        catch(err:any){
+            toggleNotification({showNotification:true,
+                title:"Data Plan Failed",
+                text:err.data.message,
+                status:"failed"})
         }
     }
 
@@ -58,11 +69,17 @@ const NewData = () =>{
             let editAirtime = editProduct({...values, model:'data'}).unwrap()
             let result = await editAirtime
             if(result.success){
-                setValues(dataObj)
+                toggleNotification({showNotification:true,
+                    title:"Data Plan Updated",
+                    text:result.message,
+                    status:"success"})
             }
         }
-        catch(err){
-            
+        catch(err:any){
+            toggleNotification({showNotification:true,
+                title:"Airtime Plan Update Failed",
+                text:err.data.message,
+                status:"failed"})
         }
     }
 

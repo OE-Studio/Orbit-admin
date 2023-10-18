@@ -4,6 +4,7 @@ import {useNewCableMutation, useEditProductMutation} from "@/slices/SERVICES_SLI
 import { useDispatch } from "react-redux";
 import { useContext } from "react";
 import { ProductContext } from "@/containers/SERVICES";
+import { NotificationContext } from "@/layouts/DASHBOARD_LAYOUT";
 
 const cableObj = {
     name:"",
@@ -20,6 +21,7 @@ const cableObj = {
 
 const NewCable = () =>{
     const [values, setValues] = useState(cableObj)
+    const {toggleNotification} = useContext(NotificationContext)
 
     const changeHandler = (e:ChangeEvent<HTMLInputElement>) =>{
         setValues(prev=>{
@@ -44,10 +46,20 @@ const NewCable = () =>{
             let result = await cable
             if(result.success){
                 setValues(cableObj)
+                toggleNotification({showNotification:true,
+                    title:"Cable Plan Created",
+                    text:result.message,
+                    status:"success"})
+            }
+            else{
+                throw new Error(result)
             }
         }
-        catch(err){
-
+        catch(err:any){
+            toggleNotification({showNotification:true,
+                title:"Cable Plan Failed",
+                text:err.data.message,
+                status:"failed"})
         }
     }
 
@@ -59,11 +71,17 @@ const NewCable = () =>{
             let editAirtime = editProduct({...values, model:'airtime'}).unwrap()
             let result = await editAirtime
             if(result.success){
-                setValues(cableObj)
+                toggleNotification({showNotification:true,
+                    title:"Cable Plan updated",
+                    text:result.message,
+                    status:"success"})
             }
         }
-        catch(err){
-            
+        catch(err:any){
+            toggleNotification({showNotification:true,
+                title:"Cable Plan update Failed",
+                text:err.data.message,
+                status:"failed"})
         }
     }
     return (

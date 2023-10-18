@@ -50,7 +50,7 @@ const VerificationDrawer = ({currCustomer}:currCustomer) =>{
                 reqId:currCustomer.userId
             }).unwrap()
             let result = await approvalResponse
-            console.log(result)
+            // console.log(result)
         }
         catch(err){
 
@@ -61,7 +61,7 @@ const VerificationDrawer = ({currCustomer}:currCustomer) =>{
         try{
             let rejectResponse = rejectKYCRequest({reqId:currCustomer.userId}).unwrap()
             let result = await rejectResponse
-            console.log(result)
+            // console.log(result)
         }
         catch(err){
             console.log(err)

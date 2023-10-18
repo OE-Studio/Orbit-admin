@@ -66,7 +66,7 @@ const ElectricityTable = () =>{
                     </tr>
                 </thead>
                 <tbody>
-                    {allElectricity?.electricityProducts?.map((airtime:airtime)=>{
+                    {!isLoading && allElectricity.map((airtime:airtime)=>{
                         return (
                             <tr className="border-t border-collapse border-x-0" key={airtime.name}>
                                 <td className={tdClass}>
