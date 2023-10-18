@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { useContext } from "react";
 import { ProductContext } from "@/containers/SERVICES";
 import { NotificationContext } from "@/layouts/DASHBOARD_LAYOUT";
+import { isEmpty } from "@/utils";
 
 const cableObj = {
     name:"",
@@ -41,6 +42,15 @@ const NewCable = () =>{
 
     const createCable = async (e:any)=>{
         e.preventDefault()
+        if(isEmpty(values)){
+            toggleNotification({showNotification:true,
+                title:"Input Error",
+                text:"Please ensure all fields are filled",
+                status:"failed"}
+            )
+
+            return false
+        }
         try{
             let cable =  await newCable(values).unwrap()
             let result = await cable
@@ -76,11 +86,12 @@ const NewCable = () =>{
                     text:result.message,
                     status:"success"})
             }
+            else throw new Error(result.message)
         }
         catch(err:any){
             toggleNotification({showNotification:true,
                 title:"Cable Plan update Failed",
-                text:err.data.message,
+                text:err.message,
                 status:"failed"})
         }
     }

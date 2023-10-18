@@ -5,6 +5,7 @@ import { ProductContext } from "../.."
 import { dateConverter } from "@/utils"
 import { DeleteIcon } from "@/assets/icons"
 import { Loader } from "@/assets/icons"
+import {EmptyState} from '@/components/EMPTY_STATE'
 
 interface airtime {
     name:string,
@@ -20,8 +21,8 @@ interface airtime {
 const AirtimeTable = () =>{
     const [productToDelete, setProductToDelete] = useState("")
 
-    const tdClass = `px-6 py-2`
-    let thClass = `px-6 py-4 text-left font-normal text-xs`
+    const tdClass = `px-2 xl:px-6 py-2`
+    let thClass = `px-2 xl:px-6 py-2 xl:py-4 text-left font-normal text-xs`
 
     const {data:allAirtimes, isLoading} = useGetAirtimeQuery(null)
     // console.log(allAirtimes)
@@ -54,8 +55,8 @@ const AirtimeTable = () =>{
                 {/* <button>Add new Products</button> */}
             </div>
 
-            <div className="border rounded-lg mt-2">
-            <table className="w-full">
+            <div className="border rounded-lg mt-2 overflow-x-auto`">
+            <table style={{ width:'100%'}} className="w-full">
                 <thead className="bg-gray_50 text-gray_600 rounded-t-lg">
                     <tr>
                         <th className={thClass}>Date</th>
@@ -67,8 +68,15 @@ const AirtimeTable = () =>{
                         <th className={thClass}></th>
                     </tr>
                 </thead>
-                <tbody>
-                    {allAirtimes?.map((airtime:airtime)=>{
+                <tbody style={{width:'100%'}}>
+                    {isLoading ? (
+                            <tr>
+                                <td colSpan={7} style={{ textAlign: "center" }}>
+                                    <Loader />
+                                </td>
+                            </tr>
+                    ) : allAirtimes.length === 0 ? <EmptyState title="Airtime Product"/>
+                    : allAirtimes?.map((airtime:airtime)=>{
                         return (
                             <tr  className="border-t border-collapse border-x-0" key={airtime.name}>
                                 <td className={tdClass}>
@@ -81,7 +89,7 @@ const AirtimeTable = () =>{
                                         </div>
                                         <div>
                                             <p className="text-sm font-medium">{airtime.name}</p>
-                                            <p className="text-sm">{airtime.description}</p>
+                                            <p className="text-sm text-[#475467]">{airtime.description}</p>
                                         </div>
                                     </div>
                                 </td>
@@ -101,7 +109,7 @@ const AirtimeTable = () =>{
                                     <div>&#8358; {airtime.selling_price}</div>
                                 </td>
                                 <td className={tdClass}>
-                                    <div className="flex gap-4 items-center">
+                                    <div className="flex gap-6 items-center">
                                         <div className="cursor-pointer" onClick={()=>editAirtime(airtime)}><PencilIcon/></div>
                                         <div className="cursor-pointer" aria-label="Delete" onClick={()=>deleteHandler(airtime.product_id)}>
                                             {loadingDelete && productToDelete===airtime.product_id ? <Loader/> : <DeleteIcon/>}

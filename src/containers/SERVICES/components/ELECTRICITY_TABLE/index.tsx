@@ -5,6 +5,7 @@ import { ProductContext } from "../.."
 import { dateConverter } from "@/utils"
 import { DeleteIcon } from "@/assets/icons"
 import { Loader } from "@/assets/icons"
+import {EmptyState} from '@/components/EMPTY_STATE'
 
 interface airtime {
     name:string,
@@ -66,7 +67,14 @@ const ElectricityTable = () =>{
                     </tr>
                 </thead>
                 <tbody>
-                    {!isLoading && allElectricity.map((airtime:airtime)=>{
+                    {isLoading ? (
+                            <tr>
+                                <td colSpan={7} style={{ textAlign: "center" }}>
+                                    <Loader />
+                                </td>
+                            </tr>
+                    ) : allElectricity.length === 0 ? <EmptyState title="Electricity Product"/>
+                    :allElectricity.map((airtime:airtime)=>{
                         return (
                             <tr className="border-t border-collapse border-x-0" key={airtime.name}>
                                 <td className={tdClass}>
@@ -78,8 +86,8 @@ const ElectricityTable = () =>{
                                             <BagIcon/>
                                         </div>
                                         <div>
-                                            <p>{airtime.name}</p>
-                                            <p>{airtime.description}</p>
+                                        <p className="text-sm font-medium">{airtime.name}</p>
+                                            <p className="text-sm text-[#475467]">{airtime.description}</p>
                                         </div>
                                     </div>
                                 </td>
@@ -99,7 +107,7 @@ const ElectricityTable = () =>{
                                     <div>&#8358; {airtime.selling_price}</div>
                                 </td>
                                 <td className={tdClass}>
-                                <div className="flex gap-4 items-center">
+                                <div className="flex gap-6 items-center">
                                         <div className="cursor-pointer" onClick={()=>editElectric(airtime)}><PencilIcon/></div>
                                         <div className="cursor-pointer" aria-label="Delete" onClick={()=>deleteHandler(airtime.product_id)}>
                                             {loadingDelete && productToDelete===airtime.product_id ? <Loader/> : <DeleteIcon/>}

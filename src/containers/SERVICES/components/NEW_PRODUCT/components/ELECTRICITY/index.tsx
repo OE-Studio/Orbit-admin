@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { useContext } from "react";
 import { NotificationContext } from "@/layouts/DASHBOARD_LAYOUT";
 import { ProductContext } from "@/containers/SERVICES";
+import { isEmpty } from "@/utils";
 
 const electricityObj = {
     name:"",
@@ -44,6 +45,15 @@ const NewElectricity = () =>{
 
     const createElectricity = async (e:any) =>{
         e.preventDefault()
+        if(isEmpty(values)){
+            toggleNotification({showNotification:true,
+                title:"Input Error",
+                text:"Please ensure all fields are filled",
+                status:"failed"}
+            )
+
+            return false
+        }
         try{
             let electricity = newElectricity(values).unwrap()
             let result = await electricity
@@ -78,14 +88,14 @@ const NewElectricity = () =>{
                     text:result.message,
                     status:"success"})
             }
-            else throw new Error(result)
+            else throw new Error(result.message)
         }
         catch(err:any){
-            // console.log({err})
-            // toggleNotification({showNotification:true,
-            //     title:"Electricity Plan Update Failed",
-            //     text:err.data.message,
-            //     status:"failed"})
+            console.log({err})
+            toggleNotification({showNotification:true,
+                title:"Electricity Plan Update Failed",
+                text:err.message,
+                status:"failed"})
         }
     }
 

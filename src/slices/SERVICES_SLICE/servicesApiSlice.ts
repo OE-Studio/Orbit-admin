@@ -95,7 +95,56 @@ export const servicesApiSlice = apiSlice.injectEndpoints({
                 url:`edit_products?token=${token}`,
                 method:'POST',
                 body:{...credentials}
-            })
+            }),
+            async onQueryStarted(args, {dispatch, queryFulfilled}){
+                try{
+                    const {data:updatedProduct} = await queryFulfilled;
+
+                    let {model, ...values} = args
+
+                    if(model === 'airtime') {
+                        dispatch(servicesApiSlice.util.updateQueryData('getAirtime', null, (draft)=>{
+                            return draft?.map((airtime:any)=>{
+                                if (airtime.product_id === values.product_id){
+                                    return values
+                                }
+                                return airtime
+                            })
+                        }))
+                    }
+                    else if(model === 'data'){
+                        dispatch(servicesApiSlice.util.updateQueryData('getData', null, (draft)=>{
+                            return draft?.map((data:any)=>{
+                                if (data.product_id === values.product_id){
+                                    return values
+                                }
+                                return data
+                            })
+                        }))
+                    }
+                    else if(model === 'cable'){
+                        dispatch(servicesApiSlice.util.updateQueryData('getCable', null, (draft)=>{
+                            return draft?.map((cable:any)=>{
+                                if (cable.product_id === values.product_id){
+                                    return values
+                                }
+                                return cable
+                            })
+                        }))
+                    }
+                    else if(model === 'electricity'){
+                        dispatch(servicesApiSlice.util.updateQueryData('getElectricity', null, (draft)=>{
+                            return draft?.map((electricity:any)=>{
+                                if (electricity.product_id === values.product_id){
+                                    return values
+                                }
+                                return electricity
+                            })
+                        }))
+                    }
+                }
+                catch{}
+            }
         }),
         deleteProduct:builder.mutation({
             query:credentials=>({

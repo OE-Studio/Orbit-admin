@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import { useContext } from "react";
 import { NotificationContext } from "@/layouts/DASHBOARD_LAYOUT";
 import { ProductContext } from "@/containers/SERVICES";
+import { isEmpty } from "@/utils";
 
 const dataObj = {
     name:"",
@@ -41,6 +42,15 @@ const NewData = () =>{
 
     const createData = async (e:any) =>{
         e.preventDefault()
+        if(isEmpty(values)){
+            toggleNotification({showNotification:true,
+                title:"Input Error",
+                text:"Please ensure all fields are filled",
+                status:"failed"}
+            )
+
+            return false
+        }
         try{
             let datas = await newData(values).unwrap()
             let result = await datas
@@ -69,16 +79,18 @@ const NewData = () =>{
             let editAirtime = editProduct({...values, model:'data'}).unwrap()
             let result = await editAirtime
             if(result.success){
+                console.log(result)
                 toggleNotification({showNotification:true,
                     title:"Data Plan Updated",
                     text:result.message,
                     status:"success"})
             }
+            else throw new Error(result.message)
         }
         catch(err:any){
             toggleNotification({showNotification:true,
                 title:"Airtime Plan Update Failed",
-                text:err.data.message,
+                text:err.message,
                 status:"failed"})
         }
     }
