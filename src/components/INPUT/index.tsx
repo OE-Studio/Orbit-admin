@@ -12,16 +12,24 @@ type InputProps = {
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
     ({type, label, errors, name, required, className, onChange, value, ...props}, ref)=>{
         const inputRef = useRef<HTMLInputElement>(null)
+        const contRef = useRef<HTMLDivElement>(null)
         const [inputType, setInputType] = useState(type)
         const [showPassword, setShowPassword] = useState(false)
         const [focused, setFocused] = useState(false)
+        const [showError, setShowError] = useState(false)
 
         const checkValue=(e:any)=>{
-            if(e.target.value || e.target.value === 0){
-                setFocused(true)
+            if(!e.target.value){
+                contRef.current?.classList.remove('border-neutral_200')
+                contRef.current?.classList.add('border-red_500')
+                setShowError(true)
+                setFocused(false)
             }
             else{
-                setFocused(false)
+                contRef.current?.classList.remove('border-red_500')
+                contRef.current?.classList.add('border-neutral_200')
+                setShowError(false)
+                setFocused(true)
             }
         }
 
@@ -36,6 +44,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             else if(type === "password" && !showPassword) {
                 setInputType("password")
             }
+            else setInputType(type)
             
         }, [type, showPassword, value])
 
@@ -44,12 +53,12 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
 
         return (
             <div>
-                <div className={`relative z-0 w-full pt-4 border border-neutral_200 rounded-lg ${className}`}>
+                <div ref={contRef} className={`relative z-0 w-full pt-4 border border-neutral_200 rounded-lg ${className}`}>
                     <input 
                         type={inputType} 
                         name={name}
                         placeholder=" "
-                        className={`h-11 pb-1 block w-full px-2 bg-transparent appearance-none focus:outline-none focus:ring-0 text-gray_500`}
+                        className={`h-11 pb-1 block w-full px-4 bg-transparent appearance-none focus:outline-none focus:ring-0 text-gray_500 text-sm`}
                         ref={inputRef}
                         onFocus={()=>setFocused(true)}
                         onBlur={checkValue}
@@ -58,11 +67,11 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
                         {...props}
                     />
                     <label 
-                        className={`ml-2 transition-all absolute duration-300 -z-1 origin-0 text-text_100 ${focused ? "top-1" : "top-4"}`}   
+                        className={`ml-2 transition-all absolute duration-300 -z-1 origin-0 text-sm text-text_100 ${focused ? "top-1" : "top-4 flex items-center"}`}   
                         htmlFor={name}
                         onClick={() => inputRef.current?.focus()}
                     >
-                        {label}
+                        &nbsp; {label}{" "}<span className="text-red_500 text-xs">{showError && 'Field is required'}</span>
                     </label>
                 </div>
             </div>

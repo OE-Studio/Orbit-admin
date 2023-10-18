@@ -6,6 +6,7 @@ import { useContext } from "react";
 import { ProductContext } from "@/containers/SERVICES";
 import { NotificationContext } from "@/layouts/DASHBOARD_LAYOUT";
 import { updateAirtime } from "@/slices/SERVICES_SLICE/servicesApiSlice";
+import { isEmpty } from "@/utils";
 
 
 const airtimeObj = {
@@ -26,7 +27,6 @@ const NewAirtime = () =>{
     const dispatch = useDispatch()
     
     const changeHandler = (e) =>{
-        // console.log(e.target.value)
         setValues(prev=>{
             return {...prev, [e.target.name]:e.target.value}
         })
@@ -43,6 +43,15 @@ const NewAirtime = () =>{
 
     const createAirtime = async(e)=>{
         e.preventDefault()
+        if(isEmpty(values)){
+            toggleNotification({showNotification:true,
+                title:"Input Error",
+                text:"Please ensure all fields are filled",
+                status:"failed"}
+            )
+
+            return false
+        }
         try{
             let airtime = newAirtime(values).unwrap()
             let result = await airtime
@@ -54,9 +63,6 @@ const NewAirtime = () =>{
                     text:result.message,
                     status:"success"}
                 )
-                // dispatch(updateAirtime([result.createProduct]))
-                // console.log(result.createProduct)
-                
             }
             else{
                 throw new Error(result.message)
@@ -64,10 +70,10 @@ const NewAirtime = () =>{
         }
         catch(err){
             console.log(err)
-            // toggleNotification({showNotification:true,
-            //     title:"Airtime Plan Failed",
-            //     text:err.data.message,
-            //     status:"failed"})
+            toggleNotification({showNotification:true,
+                title:"Airtime Plan Failed",
+                text:err.message,
+                status:"failed"})
         }
     }
 
@@ -79,16 +85,19 @@ const NewAirtime = () =>{
             let editAirtime = editProduct({...values, model:'airtime'}).unwrap()
             let result = await editAirtime
             if(result.success){
+                console.log(result)
                 toggleNotification({showNotification:true,
                     title:"Airtime Plan Updated",
                     text:result.message,
                     status:"success"})
             }
+
+            else throw new Error(result.message)
         }
         catch(err){
             toggleNotification({showNotification:true,
                 title:"Airtime Plan Update Failed",
-                text:err.data.message,
+                text:err.message,
                 status:"failed"})
         }
     }
