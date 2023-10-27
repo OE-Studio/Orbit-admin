@@ -32,8 +32,8 @@ const CustomerContainer = () =>{
     //     setCurrTab(newIndex)
     // }
 
-    const {getCustomer} = useGetCustomerQuery({userId})
-    console.log(getCustomer)
+    // const {getCustomer} = useGetCustomerQuery({userId})
+    // console.log(getCustomer)
 
     const dispatch = useDispatch()
 
