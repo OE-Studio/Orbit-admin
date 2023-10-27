@@ -4,9 +4,10 @@ import Navbar from "./components/NAVBAR";
 import styles from './index.module.css'
 import { useSelector } from "react-redux";
 import { useRouter } from "next/router";
-import { getToken, getUser } from "@/slices/AUTH/authSlice";
+import { getToken, getUser, getShowSignInPopup } from "@/slices/AUTH/authSlice";
 import Image from "next/image";
 import Notification from "@/components/NOTIFICATION"
+import {ResignIn} from "@/components/RE_SIGNIN"
 
 
 interface props{
@@ -28,6 +29,7 @@ const DashboardLayout:FunctionComponent<props> = ({children}) =>{
     const router = useRouter()
     const token = useSelector(getToken)
     const user = useSelector(getUser)
+    const resign = useSelector(getShowSignInPopup)
     const [isMobile, setIsMobile] = useState(false)
 
     const [notification, setNotification] = useState({
@@ -61,6 +63,10 @@ const DashboardLayout:FunctionComponent<props> = ({children}) =>{
         });
     },[])
 
+    useEffect(()=>{
+        console.log(resign)
+    }, [resign])
+
     if(isMobile){
         return <div className="flex items-center justify-center">
             <div className="p-4 text-center">
@@ -84,8 +90,9 @@ const DashboardLayout:FunctionComponent<props> = ({children}) =>{
                         </div>
                     </NotificationContext.Provider>
 
-                    
+                    {resign && <ResignIn/>}
                 </div>
+
                 {notification.showNotification && <Notification title={notification.title} text={notification.text} status={notification.status}/>}
             </div>
     )

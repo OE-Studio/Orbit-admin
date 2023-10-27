@@ -103,7 +103,8 @@ const AwaitVerification:FunctionComponent<tableProps> = ({action}:any) =>{
 
             <tbody className="w-full">
                 {/* {requests.allKYC && requests.allKYC.length > 0 ? } */}
-                {requests.length === 0 
+
+                {isError ? <div className="text-center">There is an error loading your request please try again</div> : requests.length === 0 
                     ? <div>No KYC request</div> 
                     : requests.map((n:user)=>{
                         return tableData(n)
