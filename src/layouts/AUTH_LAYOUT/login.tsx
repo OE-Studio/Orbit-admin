@@ -33,7 +33,7 @@ export const LoginLayout = () =>{
             else throw new Error(result.message)
             
         }
-        catch(err){
+        catch(err:any){
             setError(err.message)
             setTimeout(() => {
                 setError("")
