@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, useContext} from "react";
 import {useLoginMutation} from '@/slices/AUTH/authApiSlice'
 import { useDispatch } from "react-redux";
 import Input from "@/components/INPUT";
@@ -11,6 +11,7 @@ import { Loader } from "@/assets/icons";
 export const LoginLayout = () =>{
     const [user, setUser] = useState("daodu.muyiwa@gmail.com")
     const [pwd, setPwd] = useState("password")
+    const [error, setError] = useState("")
 
     const [login, {isLoading}] = useLoginMutation()
 
@@ -23,12 +24,20 @@ export const LoginLayout = () =>{
         try{
             let userData = login({email:user, password:pwd}).unwrap()
             let result = await userData
-            dispatch(setUserDetails(result))
-            // dispatch(setToken(userData?.loginToken))
-            router.replace("/overview")
+
+            console.log(result)
+            if(result?.existingAdmin){
+                dispatch(setUserDetails(result))
+                router.replace("/overview")
+            }
+            else throw new Error(result.message)
+            
         }
         catch(err){
-            console.log(err)
+            setError(err.message)
+            setTimeout(() => {
+                setError("")
+            }, 4000);
         }
     }
 
@@ -66,6 +75,8 @@ export const LoginLayout = () =>{
                         }
                     </button>
                 </form>
+
+                {error ? <div className="text-center mt-3 text-red_500 ">{error}</div> : ""}
             </div>
         </div>
     )

@@ -5,6 +5,7 @@ import Image from "next/image";
 import {RiAndroidLine, RiAppleLine} from 'react-icons/ri'
 import {TbDeviceLaptop} from 'react-icons/tb'
 import { useAllCustomersQuery } from "@/slices/CUSTOMERS_SLICE/customersApiSlice";
+import {dateConverter} from '@/utils'
 
 
 interface tableProps{
@@ -35,8 +36,8 @@ const TableCustomers:FunctionComponent<tableProps> = ({action}) =>{
             <tr className="border border-collapse border-x-0" onClick={routeToCustomer}>
                 <td className={tdClass}>
                     <div className="flex gap-3 items-center">
-                        <div className="inline-block">
-                            <Image src="/avatar.png" width={40} height={40} alt="avatar" className="block"/>
+                        <div className="inline-flex w-10 h-10 rounded-full  items-center justify-center border-2">
+                            {customer.firstName.charAt(0)}{customer.lastName.charAt(0)}
                         </div>
                         <div className="text-sm font-normal">
                             <div className="text-[#101828]">{customer.lastName} {customer.firstName}</div>
@@ -53,16 +54,16 @@ const TableCustomers:FunctionComponent<tableProps> = ({action}) =>{
                 <td className={tdClass}>
                     <div className="flex items-center gap-3 text-gray_500">
                         <SmartPhone/>
-                        {customer.phoneNumber}
+                        {customer.phoneNumber || 'Not Provided'}
                     </div>
                 </td>
-                <td className={`${tdClass}`}>
+                {/* <td className={`${tdClass}`}>
                 &#8358; 50,000,000
-                </td>
+                </td> */}
                 <td className={tdClass}>
                     <div className="flex items-center gap-3 text-gray_500">
                         <CalendarOutline/>
-                        {customer.createdAt}
+                        {dateConverter(customer.createdAt)}
                     </div>
                 </td>
                 <td onClick={action} className={tdClass}>
@@ -80,7 +81,7 @@ const TableCustomers:FunctionComponent<tableProps> = ({action}) =>{
                     <th className={thClass}>Name</th>
                     <th className={thClass}>Email</th>
                     <th className={thClass}>Phone number</th>
-                    <th className={thClass}>Balance</th>
+                    {/* <th className={thClass}>Balance</th> */}
                     <th className={thClass}>Date joined</th>
                     <th className={thClass}></th>
                 </tr>

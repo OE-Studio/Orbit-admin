@@ -78,7 +78,7 @@ const NewCable = () =>{
     const editHandler = async (e:any) =>{
         e.preventDefault()
         try{
-            let editAirtime = editProduct({...values, model:'airtime'}).unwrap()
+            let editAirtime = editProduct({...values, model:'cable'}).unwrap()
             let result = await editAirtime
             if(result.success){
                 toggleNotification({showNotification:true,

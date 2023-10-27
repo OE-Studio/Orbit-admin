@@ -17,14 +17,23 @@ import { toggleFlagDrawer, toggleSuspendDrawer, toggleFlagHistoryDrawer, toggleS
 import {FlagHistory} from './components/DRAWER_FLAG_HISTORY'
 import { SuspendHistory } from "./components/DRAWER_SUSPEND_HISTORY";
 import { RootState } from "@/store";
+import { useSearchParams } from 'next/navigation'
+import {useGetCustomerQuery} from "@/slices/CUSTOMER_SLICE/customerApiSlice"
 
 const CustomerContainer = () =>{
     const [currTab, setCurrTab] = useState(1)
     const {showFlag, showSuspend, showFlagHistory, showSuspendHistory} = useSelector((state:RootState)=>state.customer)
 
+    const searchParams = useSearchParams()
+    const userId = searchParams.get('id')
+    console.log(userId)
+
     // const handleTabChange = (newIndex:number) =>{
     //     setCurrTab(newIndex)
     // }
+
+    const {getCustomer} = useGetCustomerQuery({userId})
+    console.log(getCustomer)
 
     const dispatch = useDispatch()
 
@@ -43,6 +52,8 @@ const CustomerContainer = () =>{
     const closeSuspendHistory = () =>{
         dispatch(toggleSuspendHistoryDrawer())
     }
+
+
     
     return (
         <div>
