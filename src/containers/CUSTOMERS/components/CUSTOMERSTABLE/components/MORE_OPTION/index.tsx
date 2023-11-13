@@ -28,17 +28,17 @@ export const MoreOption = () =>{
             {showOptions && <div className="absolute top-10 right-0 w-60 p-2 rounded-[12px] border border-neutral_200 bg-white space-y-2 blur2fade">
                 <div className={itemsClass}>
                     <p>Show Flagged account</p>
-                    <SwitchToggle/>
+                    {/* <SwitchToggle/> */}
                 </div>
 
                 <div className={itemsClass}>
                     <p>Show Suspended account</p>
-                    <SwitchToggle/>
+                    {/* <SwitchToggle/> */}
                 </div>
 
                 <div className={itemsClass}>
                     <p>Show Disabled account</p>
-                    <SwitchToggle/>
+                    {/* <SwitchToggle/> */}
                 </div>
 
                 <div className={itemsClass}>
