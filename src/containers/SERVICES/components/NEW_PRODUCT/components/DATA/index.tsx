@@ -1,4 +1,4 @@
-import React, {useState, ChangeEvent, useEffect} from "react";
+import React, {useState, ChangeEvent, useEffect, FormEvent} from "react";
 import Input from "../../../../../../components/INPUT";
 import {useNewDataMutation, useEditProductMutation} from "@/slices/SERVICES_SLICE/servicesApiSlice"
 import { useDispatch } from "react-redux";
@@ -6,6 +6,7 @@ import { useContext } from "react";
 import { NotificationContext } from "@/layouts/DASHBOARD_LAYOUT";
 import { ProductContext } from "@/containers/SERVICES";
 import { isEmpty } from "@/utils";
+import { SwitchToggle } from "@/components/SWITCH";
 
 const dataObj = {
     name:"",
@@ -16,7 +17,8 @@ const dataObj = {
     validity:"",
     cost_price:0,
     selling_price:0,
-    product_id:""
+    product_id:"",
+    status:""
 }
 
 const NewData = () =>{
@@ -40,7 +42,7 @@ const NewData = () =>{
 
     let [newData, {isLoading, isSuccess}] = useNewDataMutation()
 
-    const createData = async (e:any) =>{
+    const createData = async (e:FormEvent) =>{
         e.preventDefault()
         if(isEmpty(values)){
             toggleNotification({showNotification:true,
@@ -73,8 +75,7 @@ const NewData = () =>{
 
     let [editProduct, {isLoading:loadingEdit}] = useEditProductMutation()
 
-    const editHandler = async (e:any) =>{
-        e.preventDefault()
+    const editFunction = async(values:any) =>{
         try{
             let editAirtime = editProduct({...values, model:'data'}).unwrap()
             let result = await editAirtime
@@ -95,9 +96,45 @@ const NewData = () =>{
         }
     }
 
+    const editHandler = async (e:any) =>{
+        e.preventDefault()
+        editFunction(values)
+    }
+
+    const updateStatus = (e:ChangeEvent) =>{
+        // console.log(e.target.checked)
+        const target = e.target as HTMLInputElement
+        if(target.checked){
+            setValues(value=>{
+                return {...value, [target.name]:'active'}
+            })
+            editFunction({...values, [target.name]:'active'})
+        }
+        else{
+            setValues(value=>{
+                return {...value, [target.name]:'inactive'}
+            })
+            // console.log(values)
+            editFunction({...values, [target.name]:'inactive'})
+        }
+    }
+
     return (
         <div>
             <form action="">
+            {mode==='edit' ? 
+                <div className="flex items-center justify-between">
+                    <p>Status</p>
+                    <div className="flex items-center gap-1">
+                        <SwitchToggle
+                            defaultChecked={values.status === 'active'}
+                            onChange={updateStatus}
+                            name="status"
+                        />
+                        <div className="w-16">{values.status}</div>
+                    </div>
+                </div> : 
+            " "}
             <Input 
                 label="Name" 
                 required={true} 

@@ -10,16 +10,14 @@ export const verificationApiSlice = apiSlice.injectEndpoints({
         }),
         approveKYCRequest:builder.mutation({
             query:credentials=>({
-                url:`approveKYC?token=${token}`,
-                method:"POST",
-                body:{...credentials}
+                url:`approveKYC/${credentials}?token=${token}`,
+                method:"POST"
             })
         }),
         rejectKYCRequest:builder.mutation({
             query:credentials=>({
-                url:`rejectKYC?token=${token}`,
-                method:"POST",
-                body:{...credentials}
+                url:`rejectKYC/${credentials}?token=${token}`,
+                method:"POST"
             })
         })
     })

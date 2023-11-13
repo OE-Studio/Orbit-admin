@@ -33,7 +33,7 @@ const TableCustomers:FunctionComponent<tableProps> = ({action}) =>{
         }
 
         return (
-            <tr className="border border-collapse border-x-0" onClick={routeToCustomer}>
+            <tr className="border border-collapse border-x-0 cursor-pointer" onClick={routeToCustomer}>
                 <td className={tdClass}>
                     <div className="flex gap-3 items-center">
                         <div className="inline-flex w-10 h-10 rounded-full  items-center justify-center border-2">

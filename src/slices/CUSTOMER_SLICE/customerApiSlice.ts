@@ -6,16 +6,19 @@ const {token} = store.getState().auth
 export const customerApiSlice = apiSlice.injectEndpoints({
     endpoints:builder=>({
         getCustomer:builder.query({
-            query:(credentials)=>({
-                url:`getUser?token=${token}`,
-                method:"GET",
-                body:{...credentials}
-            })
+            query:(id)=>`getUsers/${id}?token=${token}`
         }),
         getUserTransactions:builder.query({
-            query:()=>``
+            query:(id)=>`getTransactions/${id}?token=${token}`
+        }),
+        disableUser:builder.mutation({
+            query:(id)=>({
+                url:`blockUser/${id}/false?token=${token}`,
+                method:'PUT'  
+            })
+
         })
     })
 })
 
-export const {useGetCustomerQuery} = customerApiSlice
+export const {useGetCustomerQuery, useDisableUserMutation, useGetUserTransactionsQuery} = customerApiSlice

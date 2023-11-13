@@ -8,10 +8,20 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { toggleTransactionDetails } from "@/slices/CUSTOMER_SLICE";
 import { RootState } from "@/store";
+import { useGetUserTransactionsQuery } from "@/slices/CUSTOMER_SLICE/customerApiSlice";
+import { useSearchParams } from "next/navigation";
 
 const Transactions = () =>{
     const {showTransaction} =  useSelector((state:RootState)=>state.customer)
     const dispatch = useDispatch()
+
+    const searchParams = useSearchParams()
+    const userId = searchParams.get('id')
+
+    const {data:transactions} = useGetUserTransactionsQuery(userId)
+
+    console.log(transactions)
+    
     return (
         <div className="grid grid-cols-11 gap-12">
             <div className="col-span-8">

@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useContext} from "react";
 import {MdKeyboardArrowLeft, MdKeyboardArrowRight, MdOutlineClose} from "react-icons/md"
 import {RiArrowRightUpLine} from "react-icons/ri"
 import Image from "next/image";
@@ -7,6 +7,7 @@ import { Compare, Eraser, Flag, Thumb, Pencil, Loader } from "@/assets/icons";
 import { toggleVerificationDetails, toggleImageDetails, approveVerification } from "@/slices/CUSTOMERS_SLICE/index";
 import { useApproveKYCRequestMutation, useRejectKYCRequestMutation } from "@/slices/VERIFICATON/verificationApiSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { NotificationContext } from "@/layouts/DASHBOARD_LAYOUT";
 
 type currCustomer = {
     currCustomer:{
@@ -17,7 +18,8 @@ type currCustomer = {
         userId:string,
         username:string,
         email:string,
-        nin:string
+        nin:string,
+        reqId:string
     }
 }
 
@@ -25,6 +27,8 @@ const VerificationDrawer = ({currCustomer}:currCustomer) =>{
     const [showFlagDetails, setShowFlagDetails] = useState(false)
     const [approveKYCRequest, {isLoading:loadingApproval, isSuccess}] = useApproveKYCRequestMutation()
     const [rejectKYCRequest, {isLoading:loadingReject}] = useRejectKYCRequestMutation()
+
+    const {toggleNotification} = useContext(NotificationContext)
 
     const toggleFlagDetails = () => setShowFlagDetails(!showFlagDetails)
 
@@ -46,11 +50,16 @@ const VerificationDrawer = ({currCustomer}:currCustomer) =>{
 
     const approveKYCHandler = async () =>{
         try{
-            let approvalResponse = approveKYCRequest({
-                reqId:currCustomer.userId
-            }).unwrap()
+            let approvalResponse = approveKYCRequest(currCustomer.reqId).unwrap()
             let result = await approvalResponse
-            // console.log(result)
+            console.log(result)
+            if(result.approve.success){
+                toggleNotification({showNotification:true,
+                    title:"KYC Request",
+                    text:`User ${currCustomer.firstName} was approved successfully`,
+                    status:"success"}
+                )
+            }
         }
         catch(err){
 
@@ -59,9 +68,15 @@ const VerificationDrawer = ({currCustomer}:currCustomer) =>{
 
     const rejectKYCHandler = async()=>{
         try{
-            let rejectResponse = rejectKYCRequest({reqId:currCustomer.userId}).unwrap()
+            let rejectResponse = rejectKYCRequest(currCustomer.reqId).unwrap()
             let result = await rejectResponse
-            // console.log(result)
+            console.log(result)
+            if(result.approve.success){
+                toggleNotification({showNotification:true,
+                    title:`KYC Request`,
+                    text:`${currCustomer.firstName}'s KYC Rejected Successfully`,
+                    status:"failed"})
+            }
         }
         catch(err){
             console.log(err)

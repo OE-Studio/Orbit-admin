@@ -7,8 +7,11 @@ export const customersApiSlice = apiSlice.injectEndpoints({
     endpoints:builder=>({
         allCustomers:builder.query({
             query:()=>`getUsers?token=${token}`
+        }),
+        getStat:builder.query({
+            query:()=>`userStat?token=${token}`
         })
     })
 })
 
-export const {useAllCustomersQuery} = customersApiSlice
+export const {useAllCustomersQuery, useGetStatQuery} = customersApiSlice

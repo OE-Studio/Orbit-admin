@@ -3,7 +3,17 @@ import Chart from 'chart.js/auto';
 
 let myChart:any = null
 
-const SemiPieChart = () =>{
+interface stat{
+    stat:{
+        active_users:number,
+        all_users:number,
+        blocked_users:number,
+        unverified_users:number,
+        verified_users:number
+    }
+}
+
+const SemiPieChart = (props:stat) =>{
     useEffect(()=>{
         let canvas = document.querySelector('#pieChart') as HTMLCanvasElement
         let ctx = canvas.getContext('2d')
@@ -14,7 +24,7 @@ const SemiPieChart = () =>{
                 {
                     label: 'Recent withdrawal',
                     axis:"y",
-                    data: [75, 25],
+                    data: [(props.stat?.verified_users/props.stat?.all_users * 100), (props.stat?.unverified_users/props.stat?.all_users * 100)],
                     backgroundColor: [
                         '#5DADEC',
                         '#DFEFFB'
@@ -57,7 +67,9 @@ const SemiPieChart = () =>{
             <div className="h-full">
                 <canvas style={{width:"112px", height:"56px"}} id="pieChart"></canvas>  
 
-                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 mx-auto inline-block font-medium text-gray_300">75%</div>
+                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 mx-auto inline-block font-medium text-gray_300">
+                    {((props.stat?.verified_users/props.stat?.all_users) * 100).toFixed(0)}%
+                </div>
             </div> 
         </div>
     )

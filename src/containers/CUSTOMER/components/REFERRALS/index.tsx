@@ -1,7 +1,16 @@
 import React from "react";
 import {RiFileCopyLine} from "react-icons/ri"
+import { Loader } from "@/assets/icons";
+import { useGetCustomerQuery } from "@/slices/CUSTOMER_SLICE/customerApiSlice";
+import { useSearchParams } from "next/navigation";
 
 const Referrals = () =>{
+    const searchParams = useSearchParams()
+    const userId = searchParams.get('id')
+
+    const {data:customer, isLoading:loadingCustomer} = useGetCustomerQuery(userId)
+
+
     return (
         <div className="w-full xl:w-6/12">
             <div className="grid grid-cols-2 gap-6">
@@ -16,13 +25,13 @@ const Referrals = () =>{
             </div>
 
             <div className="relative w-full py-3 px-5 border border-neutral_200 rounded-lg mt-6">
-                <div className="flex items-center divide-x divide-neutral_200">
+                {loadingCustomer ? <Loader/> : <div className="flex items-center divide-x divide-neutral_200">
                     <div className="block text-new_green_700 text-sm font-medium pr-4">Referral link</div>
 
                     <div className="inline-flex justify-between items-center pl-4">
-                        <div>www.Orbitfinance.com/ref/1YGH2456</div>
+                        <div>www.Orbitfinance.com/ref/{customer.referralCode}</div>
                     </div>
-                </div>
+                </div> }
 
                 <RiFileCopyLine className="top-1/2 right-5 absolute -translate-y-1/2"/>
             </div>

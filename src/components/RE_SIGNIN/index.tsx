@@ -6,6 +6,7 @@ import Input from "../INPUT"
 import { useDispatch } from "react-redux";
 import React, {useState, useEffect} from "react";
 import {useLoginMutation} from '@/slices/AUTH/authApiSlice'
+import { apiSlice } from "@/pages/api/apiSlice";
 
 
 export const ResignIn = ()=>{
@@ -26,6 +27,7 @@ export const ResignIn = ()=>{
             let result = await userData
             if(result?.existingAdmin){
                 dispatch(setUserDetails(result))
+                router.reload()
                 dispatch(setSignInPopup(false))
             }
             else throw new Error(result.message)
