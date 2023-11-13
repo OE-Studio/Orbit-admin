@@ -7,9 +7,10 @@ interface obj{
     [key: string]: any;
 }
 export const isEmpty = (obj:obj)=>{
-    let result = Object.keys(obj).map(key=>{
+    let result = Object.keys(obj).filter(key=>{
         return obj[key] === ""
     })
+
     if (result.length > 0) return true
 
     return false

@@ -8,8 +8,14 @@ import { DrawerImages } from "./component/IMAGES_POPUP";
 import { useSelector } from "react-redux";
 import {Popup} from '@/components/POPUP/index'
 import { RootState } from "@/store";
+import { dateConverter } from "@/utils";
+import { customer } from "@/utils/types";
 
-const BioData = () =>{
+interface props {
+    customer:customer
+}
+
+const BioData = ({customer}:props) =>{
     const dispatch = useDispatch()
 
     const {showImage} = useSelector((state:RootState)=>state.customer)
@@ -17,7 +23,7 @@ const BioData = () =>{
     const toggleImagesHandler = () =>{
         dispatch(toggleImageDetails({
             action:"compare",
-            source:{img1:"/NIN.png", img2:"/passport.png"}
+            source:{img1:customer.utilityDoc, img2:customer.selfieId}
         }))
     }
 
@@ -33,22 +39,22 @@ const BioData = () =>{
             <p>Bio-data</p>
 
             <div className="grid grid-cols-2 gap-4 mt-4">
-                <Detail width="col-span-1" title="Legal first name" value="Emeka"/>
-                <Detail width="col-span-1" title="Legal last name" value="Emeka"/>
-                <Detail width="col-span-2" title="Username" value="Emeka" verified={true}/>
-                <Detail width="col-span-2" title="Email" value="Emeka" verified={true}/>
-                <Detail width="col-span-2" title="Phone number" value="Emeka" verified={true}/>
-                <Detail width="col-span-2" title="vNIN" value="Emeka" verified={true}/>
+                <Detail width="col-span-1" title="Legal first name" value={customer.firstName || ""}/>
+                <Detail width="col-span-1" title="Legal last name" value={customer.lastName || ""}/>
+                <Detail width="col-span-2" title="Username" value={customer.username || ""} verified={true}/>
+                <Detail width="col-span-2" title="Email" value={customer.email || ""} verified={true}/>
+                <Detail width="col-span-2" title="Phone number" value={customer.phoneNumber || ""} verified={true}/>
+                <Detail width="col-span-2" title="vNIN" value={customer.nin || ""} verified={true}/>
             </div>
 
             <div className="border border-neutral_200 rounded border-b-0 mt-4">
                 <div className="flex gap-4 p-3">
-                    <div onClick={()=>toggleImageHandler('/passport.png')} className="flex items-center justify-center bg-neutral_100">
-                        <Image src="/passport.png" height={100} width={200} alt=""/>
-                    </div>
-                    <div onClick={()=>toggleImageHandler('/NIN.png')} className="flex items-center justify-center bg-neutral_100">
-                        <Image src="/NIN.png" height={100} width={200} alt=""/>
-                    </div>
+                    {customer.selfieId && customer.selfieId !== "not provided" ? <div onClick={()=>toggleImageHandler(customer.selfieId)} className="flex items-center justify-center bg-neutral_100">
+                        <Image src={customer.selfieId} height={100} width={200} alt=""/>
+                    </div> : ""}
+                    {customer.utilityDoc && customer.utilityDoc !==  "not provided" ? <div onClick={()=>toggleImageHandler(customer.utilityDoc)} className="flex items-center justify-center bg-neutral_100">
+                        <Image src={customer.utilityDoc} height={100} width={200} alt=""/>
+                    </div> : ""}
                 </div>
 
                 <button onClick={toggleImagesHandler} className="rounded border border-neutral_200 mt-2 w-full h-9 flex items-center justify-center gap-3 text-sm">

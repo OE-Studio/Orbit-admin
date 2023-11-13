@@ -4,7 +4,8 @@ import {setSignInPopup} from "@/slices/AUTH/authSlice"
 
 // credentials:'include',
 const baseQuery = fetchBaseQuery({
-    baseUrl:'https://orbit-finance-api.herokuapp.com/admin/api/v1/admin/'
+    baseUrl:'https://orbit-finance-api.herokuapp.com/admin/api/v1/admin/',
+    refetchOnFocus: true,
     // prepareHeaders:(headers, {getState})=>{
     //     const token = getState().auth.token
     //     if(token){
@@ -19,7 +20,6 @@ const baseQueryWithReAuth = async(args, api, extraOptions)=>{
     let result =  await baseQuery(args, api, extraOptions)
 
     // const router = useRouter()
-    console.log(api)
 
     if(result?.error?.status === 401){
         
@@ -39,6 +39,7 @@ const baseQueryWithReAuth = async(args, api, extraOptions)=>{
         //     api.dispatch(setSignInPopup(true))
         // }
         console.log("unauthorizwed")
+        // api.dispatch(a)
         api.dispatch(setSignInPopup(true))
     }
 

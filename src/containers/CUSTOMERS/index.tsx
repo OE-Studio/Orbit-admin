@@ -3,8 +3,12 @@ import CustomersTable2 from "./components/CUSTOMERSTABLE";
 import {GoPlus} from "react-icons/go"
 import SemiPieChart from "./components/SEMI_PIECHART";
 import PieChartCont from "./components/PIECHART";
+import { useGetStatQuery } from "@/slices/CUSTOMERS_SLICE/customersApiSlice";
+import { Loader } from "@/assets/icons";
 
 const CustomersContainer = () =>{
+    const {data:stat, isLoading:loadingStat} = useGetStatQuery(null)
+    console.log(stat)
     return (
         <div>
             <div className="flex items-center justify-between">
@@ -20,24 +24,30 @@ const CustomersContainer = () =>{
                     <div className="flex items-center divide-x divide-neutral_200 p-6">
                         <div className="w-full">
                             <p className="text-sm text-cool_gray_1">Total number of users</p>
-                            <p className="font-clash-medium text-4xl mt-12">600k</p>
+                            <p className="font-clash-medium text-4xl mt-12">
+                                {loadingStat ? <Loader/> : stat?.all_users || 0}
+                            </p>
                         </div>
                         <div className="w-full pl-6">
                             <p className="text-sm text-cool_gray_1">Total active users</p>
-                            <p className="font-clash-medium text-4xl mt-12">350k</p>
+                            <p className="font-clash-medium text-4xl mt-12">
+                                {loadingStat ? <Loader/> : stat?.active_users || 0}
+                            </p>
                         </div>
                     </div>
 
                     <div className="grid grid-cols-3 p-6 divide-x divide-neutral_200">
                         <div className="">
-                            <SemiPieChart/>
+                            <SemiPieChart stat={stat}/>
                         </div>
                         <div className="px-6 flex gap-3">
                             <div className="inline-flex w-2 h-2 rounded-full bg-brand_blue_150 mt-1.5"></div>
                             <div className="w-full">
                                 <div className="text-sm">Verified users</div>
                                 <div className="flex items-center justify-between w-full mt-4">
-                                    <div className="font-clash-medium text-2xl inline-block">550k</div>
+                                    <div className="font-clash-medium text-2xl inline-block">
+                                        {loadingStat ? <Loader/> : stat?.verified_users || 0}
+                                    </div>
                                     <div className="inline-block text-xs text-new_green_700">3.5%</div>
                                 </div>
                             </div>
@@ -47,7 +57,9 @@ const CustomersContainer = () =>{
                             <div className="w-full">
                                 <div className="text-sm">Unverified users</div>
                                 <div className="flex items-center justify-between w-full mt-4">
-                                    <div className="font-clash-medium text-2xl inline-block">550k</div>
+                                    <div className="font-clash-medium text-2xl inline-block">
+                                        {loadingStat ? <Loader/> : stat?.unverified_users || 0}
+                                    </div>
                                     <div className="inline-block text-xs text-new_green_700">3.5%</div>
                                 </div>
                             </div>

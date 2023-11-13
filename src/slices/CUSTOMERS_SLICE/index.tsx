@@ -20,7 +20,8 @@ interface initialStateTypes {
         userId:string,
         username:string,
         email:string,
-        nin:string
+        nin:string,
+        reqId:string
     }
 }
 
@@ -44,7 +45,8 @@ const initialState:initialStateTypes = {
         userId:"",
         username:"",
         email:"",
-        nin:""
+        nin:"",
+        reqId:""
     }
 }
 

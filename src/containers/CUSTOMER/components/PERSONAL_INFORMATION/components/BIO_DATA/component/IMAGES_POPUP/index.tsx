@@ -12,6 +12,8 @@ const BothImages = ()=>{
     const closeImage = () =>{
         dispatch(toggleImageDetails(null))
     }
+    const {image} = useSelector((state:RootState)=>state.customer)
+
     return (
         <div className="rounded-[12px] overflow-hidden w-7/12">
             <div className="flex items-center justify-between bg-neutral_100 p-6">
@@ -27,10 +29,10 @@ const BothImages = ()=>{
 
             <div className="p-6 flex gap-6 h-72 relative bg-white rounded-b-[12px]">
                 <div className="w-2/3 relative flex items-center">
-                    <Image width={1000} height={500}  src="/NIN.png" className="block" alt="NIN"/>
+                    <Image width={1000} height={500}  src={image.source.img1} className="block" alt="NIN"/>
                 </div>
                 <div className="w-1/3 relative flex items-center justify-end">
-                    <Image src="/passport.png" width={200} height={500}  className="block" alt="passport"/>
+                    <Image src={image.source.img2} width={200} height={500}  className="block" alt="passport"/>
                 </div>
             </div>
         </div>

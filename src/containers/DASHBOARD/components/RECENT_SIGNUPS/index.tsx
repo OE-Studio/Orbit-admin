@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useContext} from "react";
 import CustomersTable from './CUSTOMERSTABLE/index'
 import Drawer from "@/components/DRAWER";
 import VerificationDrawer from "@/components/USER_VERIFICATION/verification";
@@ -93,6 +93,7 @@ const DrawerImages = () =>{
 const RecentSignups = () =>{
     const {showVerificationDetails, showImage, currCustomer} = useSelector((state:RootState)=>state.customers)
     const dispatch = useDispatch()
+
 
     return (
         <div>

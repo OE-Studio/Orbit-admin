@@ -19,6 +19,7 @@ import { SuspendHistory } from "./components/DRAWER_SUSPEND_HISTORY";
 import { RootState } from "@/store";
 import { useSearchParams } from 'next/navigation'
 import {useGetCustomerQuery} from "@/slices/CUSTOMER_SLICE/customerApiSlice"
+import { Loader } from "@/assets/icons";
 
 const CustomerContainer = () =>{
     const [currTab, setCurrTab] = useState(1)
@@ -26,14 +27,13 @@ const CustomerContainer = () =>{
 
     const searchParams = useSearchParams()
     const userId = searchParams.get('id')
-    console.log(userId)
 
     // const handleTabChange = (newIndex:number) =>{
     //     setCurrTab(newIndex)
     // }
 
-    // const {getCustomer} = useGetCustomerQuery({userId})
-    // console.log(getCustomer)
+    const {data:customer, isLoading:loadingCustomer} = useGetCustomerQuery(userId)
+    console.log(customer)
 
     const dispatch = useDispatch()
 
@@ -54,17 +54,22 @@ const CustomerContainer = () =>{
     }
 
 
+    if(loadingCustomer) {
+        return <div>
+            <Loader/>
+        </div>
+    }
     
     return (
         <div>
             <div className="flex items-center justify-between">
                 <div className="flex gap-3 items-center">
-                    <div className="inline-block">
-                        <Image src="/avatar.png" width={40} height={40} alt="avatar" className="block"/>
-                    </div>
+                {customer.selfieId !== "not provided" ? <div className="inline-flex rounded-full w-10 h-10">
+                        <Image src={customer.selfieId} width={40} height={40} alt="avatar" className="block rounded-full"/>
+                    </div>: ""}
                     <div className="text-sm font-normal">
-                        <div className="text-[#101828]">Last-name First-name</div>
-                        <div className="text-[#475467]">@username</div>
+                        <div className="text-[#101828]">{customer.lastName} {customer.firstName}</div>
+                        <div className="text-[#475467]">@{customer.username}</div>
                     </div>
                 </div>
 
@@ -99,7 +104,7 @@ const CustomerContainer = () =>{
                                     <RiStarSmileFill/>
                                 </button>
 
-                                <Actions/>
+                                <Actions id={userId}/>
                             </div>
                         </div>
 

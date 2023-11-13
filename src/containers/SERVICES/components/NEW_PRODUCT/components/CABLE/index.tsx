@@ -1,4 +1,4 @@
-import React, {useState, ChangeEvent, useEffect} from "react";
+import React, {useState, ChangeEvent, useEffect, FormEvent} from "react";
 import Input from "../../../../../../components/INPUT";
 import {useNewCableMutation, useEditProductMutation} from "@/slices/SERVICES_SLICE/servicesApiSlice"
 import { useDispatch } from "react-redux";
@@ -6,6 +6,7 @@ import { useContext } from "react";
 import { ProductContext } from "@/containers/SERVICES";
 import { NotificationContext } from "@/layouts/DASHBOARD_LAYOUT";
 import { isEmpty } from "@/utils";
+import { SwitchToggle } from "@/components/SWITCH";
 
 const cableObj = {
     name:"",
@@ -17,7 +18,8 @@ const cableObj = {
     cost_price:0,
     selling_price:0,
     cable_type:"",
-    product_id:""
+    product_id:"",
+    status:""
 }
 
 const NewCable = () =>{
@@ -40,9 +42,10 @@ const NewCable = () =>{
         }
      },[mode])
 
-    const createCable = async (e:any)=>{
+    const createCable = async (e:FormEvent)=>{
         e.preventDefault()
         if(isEmpty(values)){
+            console.log(values)
             toggleNotification({showNotification:true,
                 title:"Input Error",
                 text:"Please ensure all fields are filled",
@@ -75,8 +78,7 @@ const NewCable = () =>{
 
     let [editProduct, {isLoading:loadingEdit}] = useEditProductMutation()
 
-    const editHandler = async (e:any) =>{
-        e.preventDefault()
+    const editFunction = async(values:any)=>{
         try{
             let editAirtime = editProduct({...values, model:'cable'}).unwrap()
             let result = await editAirtime
@@ -95,9 +97,47 @@ const NewCable = () =>{
                 status:"failed"})
         }
     }
+
+    const editHandler = async (e:any) =>{
+        e.preventDefault()
+        editFunction(values)
+    }
+
+    const updateStatus = (e:ChangeEvent) =>{
+        // console.log(e.target.checked)
+        const target = e.target as HTMLInputElement
+        if(target.checked){
+            setValues(value=>{
+                return {...value, [target.name]:'active'}
+            })
+            editFunction({...values, [target.name]:'active'})
+        }
+        else{
+            setValues(value=>{
+                return {...value, [target.name]:'inactive'}
+            })
+            // console.log(values)
+            editFunction({...values, [target.name]:'inactive'})
+        }
+    }
+
     return (
         <div>
-            <form action="">
+            <form action="" onSubmit={mode === 'edit' ? editHandler :createCable}>
+            {mode==='edit' ? 
+                <div className="flex items-center justify-between">
+                    <p>Status</p>
+                    <div className="flex items-center gap-1">
+                        <SwitchToggle
+                            defaultChecked={values.status === 'active'}
+                            onChange={updateStatus}
+                            name="status"
+                        />
+                        <div className="w-16">{values.status}</div>
+                    </div>
+                </div> : 
+            " "}
+
             <Input 
                 label="Name" 
                 required={true} 
@@ -182,11 +222,11 @@ const NewCable = () =>{
                 />
             </div>
 
-            <button
+            <input
+                type="submit"
                 className="btn-black rounded-lg h-11 flex items-center justify-center gap-2 w-full mt-6 font-semibold text-base"
-                onClick={mode === 'edit' ? editHandler :createCable}>
-                {isLoading || loadingEdit ? "Loading..." : `${mode === 'edit' ? 'Edit' : 'Create'}`}
-            </button>
+                value={isLoading || loadingEdit ? "Loading..." : `${mode === 'edit' ? 'Edit' : 'Create'}`}
+            />
             </form>
         </div>
     )

@@ -9,8 +9,8 @@ import { DarkLogo } from "@/assets/icons";
 import { Loader } from "@/assets/icons";
 
 export const LoginLayout = () =>{
-    const [user, setUser] = useState("daodu.muyiwa@gmail.com")
-    const [pwd, setPwd] = useState("password")
+    const [user, setUser] = useState("")
+    const [pwd, setPwd] = useState("")
     const [error, setError] = useState("")
 
     const [login, {isLoading}] = useLoginMutation()

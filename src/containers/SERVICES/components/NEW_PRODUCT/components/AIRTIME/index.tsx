@@ -1,12 +1,13 @@
-import React, {useState, useEffect} from "react";
+import React, {useState, useEffect, ChangeEvent, FormEvent} from "react";
 import Input from "../../../../../../components/INPUT";
 import {useNewAirtimeMutation, useEditProductMutation} from "@/slices/SERVICES_SLICE/servicesApiSlice"
 import { useDispatch } from "react-redux";
 import { useContext } from "react";
 import { ProductContext } from "@/containers/SERVICES";
 import { NotificationContext } from "@/layouts/DASHBOARD_LAYOUT";
-import { updateAirtime } from "@/slices/SERVICES_SLICE/servicesApiSlice";
+// import { updateAirtime } from "@/slices/SERVICES_SLICE/servicesApiSlice";
 import { isEmpty } from "@/utils";
+import { SwitchToggle } from "@/components/SWITCH";
 
 
 const airtimeObj = {
@@ -18,7 +19,8 @@ const airtimeObj = {
     validity:"",
     cost_price:0,
     selling_price:0,
-    product_id:""
+    product_id:"",
+    status:""
 }
 
 const NewAirtime = () =>{
@@ -26,7 +28,7 @@ const NewAirtime = () =>{
     const {toggleNotification} = useContext(NotificationContext)
     const dispatch = useDispatch()
     
-    const changeHandler = (e) =>{
+    const changeHandler = (e:ChangeEvent<HTMLInputElement>) =>{
         setValues(prev=>{
             return {...prev, [e.target.name]:e.target.value}
         })
@@ -41,9 +43,10 @@ const NewAirtime = () =>{
 
     let [newAirtime, {isLoading, isSuccess}] = useNewAirtimeMutation()
 
-    const createAirtime = async(e)=>{
+    const createAirtime = async(e:FormEvent)=>{
         e.preventDefault()
         if(isEmpty(values)){
+            console.log(values)
             toggleNotification({showNotification:true,
                 title:"Input Error",
                 text:"Please ensure all fields are filled",
@@ -68,7 +71,7 @@ const NewAirtime = () =>{
                 throw new Error(result.message)
             }
         }
-        catch(err){
+        catch(err:any){
             console.log(err)
             toggleNotification({showNotification:true,
                 title:"Airtime Plan Failed",
@@ -79,8 +82,7 @@ const NewAirtime = () =>{
 
     let [editProduct, {isLoading:loadingEdit}] = useEditProductMutation()
 
-    const editHandler = async (e) =>{
-        e.preventDefault()
+    const editFunction = async(values:any)=>{
         try{
             let editAirtime = editProduct({...values, model:'airtime'}).unwrap()
             let result = await editAirtime
@@ -94,7 +96,7 @@ const NewAirtime = () =>{
 
             else throw new Error(result.message)
         }
-        catch(err){
+        catch(err:any){
             toggleNotification({showNotification:true,
                 title:"Airtime Plan Update Failed",
                 text:err.message,
@@ -102,9 +104,45 @@ const NewAirtime = () =>{
         }
     }
 
+    const editHandler = async (e:FormEvent) =>{
+        e.preventDefault()
+        editFunction(values)
+    }
+
+    const updateStatus = (e:ChangeEvent) =>{
+        // console.log(e.target.checked)
+        const target = e.target as HTMLInputElement
+        if(target.checked){
+            setValues(value=>{
+                return {...value, [target.name]:'active'}
+            })
+            editFunction({...values, [target.name]:'active'})
+        }
+        else{
+            setValues(value=>{
+                return {...value, [target.name]:'inactive'}
+            })
+            // console.log(values)
+            editFunction({...values, [target.name]:'inactive'})
+        }
+    }
+
     return (
         <div>
-            <form action="">
+            <form action="" onSubmit={mode === 'edit' ? editHandler : createAirtime}>
+            {mode==='edit' ? 
+                <div className="flex items-center justify-between">
+                    <p>Status</p>
+                    <div className="flex items-center gap-1">
+                        <SwitchToggle
+                            defaultChecked={values.status === 'active'}
+                            onChange={updateStatus}
+                            name="status"
+                        />
+                        <div className="w-16">{values.status}</div>
+                    </div>
+                </div> : 
+            " "}
             <Input 
                 label="Name" 
                 required={true} 
@@ -181,11 +219,11 @@ const NewAirtime = () =>{
                 />
             </div>
 
-            <button
+            <input
                 className="btn-black rounded-lg h-11 flex items-center justify-center gap-2 w-full mt-6 font-semibold text-base"
-                onClick={mode === 'edit' ? editHandler :createAirtime}>
-                {isLoading || loadingEdit ? "Loading..." : `${mode === 'edit' ? 'Edit' : 'Create'}`}
-            </button>
+                value={isLoading || loadingEdit ? "Loading..." : `${mode === 'edit' ? 'Edit' : 'Create'}`}
+                type="submit"
+            />
             </form>
         </div>
     )

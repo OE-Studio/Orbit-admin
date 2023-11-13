@@ -22,7 +22,8 @@ interface product {
     product_id:string,
     state:string, 
     meter_type:string,
-    plan_type:string
+    plan_type:string,
+    airtime_type:string
 }
 
 export const ProductContext = createContext({
@@ -42,7 +43,8 @@ export const ProductContext = createContext({
         cable_type:"", 
         product_id:"",
         state:"", 
-        meter_type:""
+        meter_type:"",
+        airtime_type:""
     },
     onChange(a:string,b:any,c:string){},
     product_type:''
@@ -67,7 +69,8 @@ export const ServicesContainer = () =>{
             product_id:"",
             plan_type:"",
             state:"", 
-            meter_type:""
+            meter_type:"",
+            airtime_type:""
         },
         product_type:""
     })
@@ -100,7 +103,8 @@ export const ServicesContainer = () =>{
                 cable_type:"", 
                 product_id:"",
                 state:"", 
-                meter_type:""
+                meter_type:"",
+                airtime_type:""
             },
             product_type:""
         })
