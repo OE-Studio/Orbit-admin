@@ -19,7 +19,7 @@ const cableObj = {
     selling_price:0,
     cable_type:"",
     product_id:"",
-    status:""
+    status:"active"
 }
 
 const NewCable = () =>{

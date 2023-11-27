@@ -10,8 +10,8 @@ import { apiSlice } from "@/pages/api/apiSlice";
 
 
 export const ResignIn = ()=>{
-    const [user, setUser] = useState("daodu.muyiwa@gmail.com")
-    const [pwd, setPwd] = useState("password")
+    const [user, setUser] = useState("")
+    const [pwd, setPwd] = useState("")
     const [error, setError] = useState("")
 
     const [login, {isLoading}] = useLoginMutation()
