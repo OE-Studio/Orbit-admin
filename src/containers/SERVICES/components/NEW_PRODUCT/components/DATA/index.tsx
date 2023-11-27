@@ -18,7 +18,7 @@ const dataObj = {
     cost_price:0,
     selling_price:0,
     product_id:"",
-    status:""
+    status:"active"
 }
 
 const NewData = () =>{
