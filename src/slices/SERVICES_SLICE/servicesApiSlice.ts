@@ -76,18 +76,18 @@ export const servicesApiSlice = apiSlice.injectEndpoints({
             }
         }),
         getAirtime:builder.query({
-            query:()=>`https://orbit-finance-api.herokuapp.com/admin/api/v1/products/airtime`
+            query:()=>`https://api.theorbit.finance/admin/api/v1/products/airtime`
         }),
         getData:builder.query({
-            query:()=>`https://orbit-finance-api.herokuapp.com/admin/api/v1/products/data`,
+            query:()=>`https://api.theorbit.finance/admin/api/v1/products/data`,
             transformResponse:(response:any)=>response.dataProducts
         }),
         getElectricity:builder.query({
-            query:()=>`https://orbit-finance-api.herokuapp.com/admin/api/v1/products/electricity`,
+            query:()=>`https://api.theorbit.finance/admin/api/v1/products/electricity`,
             transformResponse:(response:any)=>response.electricityProducts
         }),
         getCable:builder.query({
-            query:()=>`https://orbit-finance-api.herokuapp.com/admin/api/v1/products/cable`,
+            query:()=>`https://api.theorbit.finance/admin/api/v1/products/cable`,
             transformResponse:(response:any)=>response.cableProducts
         }),
         editProduct:builder.mutation({

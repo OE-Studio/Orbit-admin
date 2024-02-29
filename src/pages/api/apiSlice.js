@@ -4,7 +4,7 @@ import {setSignInPopup} from "@/slices/AUTH/authSlice"
 
 // credentials:'include',
 const baseQuery = fetchBaseQuery({
-    baseUrl:'https://orbit-finance-api.herokuapp.com/admin/api/v1/admin/',
+    baseUrl:'https://api.theorbit.finance/admin/api/v1/admin/',
     refetchOnFocus: true,
     // prepareHeaders:(headers, {getState})=>{
     //     const token = getState().auth.token
